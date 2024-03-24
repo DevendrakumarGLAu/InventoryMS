@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
-import { AddproductRouting } from './addproduct-routing.module';
+import { CommonModule } from '@angular/common';
+import { AddproductRoutingModule } from './addproduct-routing.module';
 import { AddproductComponent } from './addproduct.component';
 
 @NgModule({
     declarations:[
         AddproductComponent
     ],
-    imports:[
-        AddproductRouting
+    imports:[CommonModule,
+        AddproductRoutingModule
     ]
 })
 

@@ -5,20 +5,14 @@ import { AdddetailsComponent } from "./adddetails/adddetails.component";
 
 const routes: Routes = [
   {
-      path: 'addproduct',
+      path: '',
       component: AddproductComponent,
-      children: [
-          {
-              path: 'adddetails',
-              component: AdddetailsComponent
-          }
-      ]
-  }
+  },
+  { path: 'adddetails', component: AdddetailsComponent }
 ];
 
-    @NgModule({
-        imports: [RouterModule.forRoot(routes)],
-        exports: [RouterModule]
-      })
-    
-      export class AddproductRouting{}
+@NgModule({
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
+})
+export class AddproductRoutingModule {}
