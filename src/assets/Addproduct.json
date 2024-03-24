@@ -1,0 +1,85 @@
+
+[
+    {
+        "type": "text",
+        "name": "firstname",
+        "label": "First Name",
+        "placeholder": "Enter First Name",
+        "validations": [
+            {
+                "name": "required",
+                "validator": "required",
+                "message": "First Name is required"
+            },
+            {
+                "name": "pattern",
+                "validator": "^[a-zA-Z]+$",
+                "message": "Accept only alphabets for First Name"
+            }
+        ]
+    },
+    {
+        "type": "text",
+        "name": "lastname",
+        "label": "Last Name",
+        "placeholder": "Enter Last Name",
+        "validations": [
+            {
+                "name": "required",
+                "validator": "required",
+                "message": "Last Name is required"
+            },
+            {
+                "name": "pattern",
+                "validator": "^[a-zA-Z]+$",
+                "message": "Accept only alphabets for Last Name"
+            }
+        ]
+    },
+    {
+        "type": "email",
+        "name": "email",
+        "label": "Email",
+        "placeholder": "Enter your email",
+        "validations": [
+            {
+                "name": "required",
+                "validator": "required",
+                "message": "Email is required"
+            },
+            {
+                "name": "pattern",
+                "validator": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+                "message": "Enter a valid email address"
+            }
+        ]
+    },
+    {
+        "type": "password",
+        "name": "password",
+        "label": "Password",
+        "placeholder": "Enter your password",
+        "validations": [
+            {
+                "name": "required",
+                "validator": "required",
+                "message": "Password is required"
+            },
+            {
+                "name": "pattern",
+                "validator": "^[a-zA-Z0-9]+$",
+                "message": "Password should contain only alphabets and numbers"
+            },
+            {
+                "name": "minlength",
+                "validator": 8,
+                "message": "Password should be at least 8 characters long"
+            }
+        ]
+    },
+    {
+        "type": "checkbox",
+        "name": "subscribe",
+        "label": "Subscribe to newsletter"
+    }
+]
