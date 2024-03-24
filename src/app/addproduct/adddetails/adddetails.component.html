@@ -1,10 +1,38 @@
-<!-- <form [formGroup]="addProductForm" (ngSubmit)="onSubmit()">
-    <div *ngFor="let field of formFields">
-      <label>{{ field.label }}</label>
-      <input [type]="field.type" [formControlName]="field.name">
+<div class="container">
+  <div class="card mt-4">
+    <div class="card-body">
+      <form [formGroup]="addProductForm" (ngSubmit)="onSubmit()">
+        <div class="form-group row" *ngFor="let field of formFields">
+          <label class="col-sm-2 col-form-label">{{ field.label }}</label>
+          <div class="col-sm-4">
+            <ng-container *ngIf="field.type === 'text' || field.type === 'number'; else selectField">
+              <input class="form-control"
+                     [type]="field.type"
+                     [formControlName]="field.name"
+                     [placeholder]="field.placeholder">
+            </ng-container>
+            <ng-template #selectField>
+              <select class="form-control" [formControlName]="field.name">
+                <option *ngFor="let option of field.options" [value]="option.value">{{ option.label }}</option>
+              </select>
+            </ng-template>
+            <!-- Display validation errors -->
+            <div *ngIf="addProductForm.get(field.name)?.errors && addProductForm.get(field.name)?.touched" class="text-danger">
+              <div *ngFor="let validation of field.validations">
+                <div *ngIf="addProductForm.get(field.name)?.hasError(validation.validator)">
+                  {{ validation.message }}
+                </div>
+              </div>
+              <!-- Additional check for 'required' validation -->
+              <div *ngIf="addProductForm.get(field.name)?.hasError('required') && !addProductForm.get(field.name)?.touched">
+                {{ field.label }} is required
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      
     </div>
-    <button type="submit">Submit</button>
-  </form>
-   -->
-
-   <p>hello add product details</p>
+  </div>
+</div>

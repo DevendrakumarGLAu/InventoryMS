@@ -1,85 +1,76 @@
-
 [
     {
-        "type": "text",
-        "name": "firstname",
-        "label": "First Name",
-        "placeholder": "Enter First Name",
+        "type": "select",
+        "name": "category",
+        "label": "Category",
+        "placeholder": "Select Category",
+        "options": [
+            
+            { "value": "tablet", "label": "Tablet" },
+            { "value": "syrup", "label": "Syrup" },
+            { "value": "surgical", "label": "Surgical Items" },
+            { "value": "powder", "label": "Powder" },
+            { "value": "cosmetics", "label": "Cosmetics" }
+        ],
         "validations": [
             {
                 "name": "required",
                 "validator": "required",
-                "message": "First Name is required"
-            },
-            {
-                "name": "pattern",
-                "validator": "^[a-zA-Z]+$",
-                "message": "Accept only alphabets for First Name"
+                "message": "Category is required"
             }
         ]
     },
     {
         "type": "text",
-        "name": "lastname",
-        "label": "Last Name",
-        "placeholder": "Enter Last Name",
+        "name": "productName",
+        "label": "Product Name",
+        "placeholder": "Enter Product Name",
         "validations": [
             {
                 "name": "required",
                 "validator": "required",
-                "message": "Last Name is required"
-            },
-            {
-                "name": "pattern",
-                "validator": "^[a-zA-Z]+$",
-                "message": "Accept only alphabets for Last Name"
+                "message": "Product Name is required"
             }
         ]
     },
     {
-        "type": "email",
-        "name": "email",
-        "label": "Email",
-        "placeholder": "Enter your email",
+        "type": "number",
+        "name": "costPrice",
+        "label": "Cost Price",
+        "placeholder": "Enter Cost Price",
         "validations": [
             {
                 "name": "required",
                 "validator": "required",
-                "message": "Email is required"
-            },
-            {
-                "name": "pattern",
-                "validator": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
-                "message": "Enter a valid email address"
+                "message": "Cost Price is required"
             }
         ]
     },
     {
-        "type": "password",
-        "name": "password",
-        "label": "Password",
-        "placeholder": "Enter your password",
+        "type": "number",
+        "name": "sellingPrice",
+        "label": "Selling Price",
+        "placeholder": "Enter Selling Price",
         "validations": [
             {
                 "name": "required",
                 "validator": "required",
-                "message": "Password is required"
-            },
-            {
-                "name": "pattern",
-                "validator": "^[a-zA-Z0-9]+$",
-                "message": "Password should contain only alphabets and numbers"
-            },
-            {
-                "name": "minlength",
-                "validator": 8,
-                "message": "Password should be at least 8 characters long"
+                "message": "Selling Price is required"
             }
         ]
     },
     {
-        "type": "checkbox",
-        "name": "subscribe",
-        "label": "Subscribe to newsletter"
+        "type": "number",
+        "name": "quantity",
+        "label": "Quantity",
+        "placeholder": "Enter Quantity",
+        "validations": [
+            {
+                "name": "required",
+                "validator": "required",
+                "message": "Quantity is required"
+            }
+        ]
     }
+    
 ]

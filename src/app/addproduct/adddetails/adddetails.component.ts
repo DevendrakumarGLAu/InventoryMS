@@ -2,44 +2,55 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AddProductService } from '../../services/add-product.service';
 
-
 @Component({
   selector: 'app-adddetails',
   templateUrl: './adddetails.component.html',
   styleUrls: ['./adddetails.component.css']
 })
-export class AdddetailsComponent {
-  // addProductForm!: FormGroup;
-  // formFields: any=[];
+export class AdddetailsComponent implements OnInit {
+  addProductForm!: FormGroup;
+  formFields: any = [];
+
   constructor(
     private fb: FormBuilder,
-    private AddProductService: AddProductService
+    private addProductService: AddProductService
   ) {}
 
-  ngOnInit(): void {
-    // this.addProductForm = this.fb.group({});
-    this.AddProductService.GetProductform().subscribe(data => {
-
-      console.log("formdata111",data)
-      // this.formFields = data.fields;
-      // this.generateFormControls();
+  async ngOnInit() {
+    await this.addProductService.GetProductform().subscribe(data => {
+      this.formFields = data;
+      this.generateForm();
     });
   }
-  // generateFormControls(): void {
-  //   this.formFields.forEach((field:any) => {
-  //     this.addProductForm.addControl(
-  //       field.name,
-  //       this.fb.control('', Validators.required)
-  //     );
-  //   });
-  // }
-  // onSubmit(): void {
-  //   if (this.addProductForm.valid) {
-  //     // Handle form submission
-  //     console.log(this.addProductForm.value);
-  //   }
-  // }
 
+  generateForm(): void {
+    const formGroupConfig: any = {};
 
+    this.formFields.forEach((field: any) => {
+      const validationsArray = [];
+      if (field.validations && field.validations.includes('required')) {
+        validationsArray.push(Validators.required);
+      }
+      if (field.validations && field.validations.includes('pattern')) {
+        const pattern = new RegExp(field.validator);
+        validationsArray.push(Validators.pattern(pattern));
+      }
+      if (field.validations && field.validations.includes('minlength')) {
+        validationsArray.push(Validators.minLength(field.validator));
+      }
+      formGroupConfig[field.name] = ['', validationsArray];
+    });
 
+    this.addProductForm = this.fb.group(formGroupConfig);
+  }
+
+  onSubmit(): void {
+    if (this.addProductForm.valid) {
+      console.log(this.addProductForm.value);
+      // Handle form submission
+    } else {
+      // Mark all fields as touched to display validation errors
+      this.addProductForm.markAllAsTouched();
+    }
+  }
 }
