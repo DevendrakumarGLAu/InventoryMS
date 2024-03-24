@@ -7,6 +7,10 @@ import { HeaderComponent } from './common/header/header.component';
 import { SidebarComponent } from './common/sidebar/sidebar.component';
 import { FooterComponent } from './common/footer/footer.component';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import {MatInputModule} from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -18,7 +22,11 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]
