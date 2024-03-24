@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {sidebarMenuConfig} from './config'
 
 @Component({
   selector: 'app-sidebar',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent {
-
+  sidebaritems = sidebarMenuConfig;
 }
