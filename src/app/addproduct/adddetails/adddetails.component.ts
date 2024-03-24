@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AddProductService } from '../../services/add-product.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-adddetails',
   templateUrl: './adddetails.component.html',
@@ -13,7 +13,8 @@ export class AdddetailsComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private addProductService: AddProductService
+    private addProductService: AddProductService,
+    private router:Router
   ) {}
 
   async ngOnInit() {
@@ -24,20 +25,23 @@ export class AdddetailsComponent implements OnInit {
   }
 
   generateForm(): void {
+    // debugger
     const formGroupConfig: any = {};
 
     this.formFields.forEach((field: any) => {
-      const validationsArray = [];
-      if (field.validations && field.validations.includes('required')) {
+      const validationsArray:any= [];
+     field.validations.forEach((valid:any) =>{
+      if (valid.name === 'required') {
         validationsArray.push(Validators.required);
       }
-      if (field.validations && field.validations.includes('pattern')) {
-        const pattern = new RegExp(field.validator);
-        validationsArray.push(Validators.pattern(pattern));
-      }
-      if (field.validations && field.validations.includes('minlength')) {
-        validationsArray.push(Validators.minLength(field.validator));
-      }
+     })
+      // if (field.validations && field.validations.includes('pattern')) {
+      //   const pattern = new RegExp(field.validator);
+      //   validationsArray.push(Validators.pattern(pattern));
+      // }
+      // if (field.validations && field.validations.includes('minlength')) {
+      //   validationsArray.push(Validators.minLength(field.validator));
+      // }
       formGroupConfig[field.name] = ['', validationsArray];
     });
 
@@ -46,10 +50,15 @@ export class AdddetailsComponent implements OnInit {
 
   onSubmit(): void {
     if (this.addProductForm.valid) {
-      console.log(this.addProductForm.value);
-      // Handle form submission
+      const value= this.addProductForm.value;
+      // console.log(this.addProductForm.value);
+      this.addProductService.addProduct(value).subscribe(response =>{
+        console.log(response)
+        this.router.navigate(['/addproduct']);
+      })
+     
     } else {
-      // Mark all fields as touched to display validation errors
+     
       this.addProductForm.markAllAsTouched();
     }
   }
