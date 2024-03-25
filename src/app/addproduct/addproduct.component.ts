@@ -3,6 +3,7 @@ import { AddProductService } from '../services/add-product.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-addproduct',
@@ -12,7 +13,8 @@ import { MatSort } from '@angular/material/sort';
 export class AddproductComponent implements OnInit {
   productdata: any;
   dataSource!: MatTableDataSource<any>;
-  displayedColumns: string[] = ['id', 'category', 'productName', 'costPrice', 'sellingPrice', 'quantity'];
+  displayedColumns: string[] = ['id', 'category', 'productName', 'costPrice', 'sellingPrice', 'quantity', 'actions'];
+
 
   pageSize = 5;
   pageSizeOptions = [5, 10, 25, 100];
@@ -21,7 +23,7 @@ export class AddproductComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private AddProductService: AddProductService) {}
+  constructor(private AddProductService: AddProductService,private router: Router) {}
 
   ngOnInit(): void {
     this.AddProductService.getProductData().subscribe(data => {
@@ -32,7 +34,10 @@ export class AddproductComponent implements OnInit {
       this.dataSource.sort = this.sort;
     });
   }
-
+ 
+  editProduct(id: number) {
+    this.router.navigate(['/addproduct/adddetails'], { queryParams: { id: id } });
+  }
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     console.log(this.dataSource.filter);

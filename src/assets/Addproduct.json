@@ -5,12 +5,11 @@
         "label": "Category",
         "placeholder": "Select Category",
         "options": [
-            
-            { "value": "tablet", "label": "Tablet" },
-            { "value": "syrup", "label": "Syrup" },
-            { "value": "surgical", "label": "Surgical Items" },
-            { "value": "powder", "label": "Powder" },
-            { "value": "cosmetics", "label": "Cosmetics" }
+            { "value": "Tablet", "label": "Tablet" },
+        { "value": "Syrup", "label": "Syrup" },
+        { "value": "Surgical Items", "label": "Surgical Items" },
+        { "value": "Powder", "label": "Powder" },
+        { "value": "Cosmetics", "label": "Cosmetics" }
         ],
         "validations": [
             {
@@ -71,6 +70,31 @@
                 "message": "Quantity is required"
             }
         ]
+    },
+    {
+        "type": "date",
+        "name": "manufacturingDate",
+        "label": "Manufacturing Date",
+        "placeholder": "Select Manufacturing Date",
+        "validations": [
+            {
+                "name": "required",
+                "validator": "required",
+                "message": "Manufacturing Date is required"
+            }
+        ]
+    },
+    {
+        "type": "date",
+        "name": "expiryDate",
+        "label": "Expiry Date",
+        "placeholder": "Select Expiry Date",
+        "validations": [
+            {
+                "name": "required",
+                "validator": "required",
+                "message": "Expiry Date is required"
+            }
+        ]
     }
-    
 ]

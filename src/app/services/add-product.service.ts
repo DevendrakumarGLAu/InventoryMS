@@ -13,6 +13,9 @@ export class AddProductService{
     GetProductform():Observable<any[]>{
         return this.http.get<any[]>('./assets/Addproduct.json')
     }
+    getProductDetails(productId: any): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/getproduct/${productId}`);
+    }
 
     addProduct(productData: any) {
         return this.http.post<any[]>(`${this.apiUrl}/addproduct`, productData);

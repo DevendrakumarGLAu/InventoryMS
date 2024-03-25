@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AddProductService } from '../../services/add-product.service';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-adddetails',
   templateUrl: './adddetails.component.html',
@@ -10,17 +11,36 @@ import { Router } from '@angular/router';
 export class AdddetailsComponent implements OnInit {
   addProductForm!: FormGroup;
   formFields: any = [];
+  productId:any;
 
   constructor(
     private fb: FormBuilder,
     private addProductService: AddProductService,
-    private router:Router
+    private router:Router,
+    private route: ActivatedRoute
   ) {}
 
   async ngOnInit() {
+    this.productId = this.route.snapshot.queryParams['id'];
     await this.addProductService.GetProductform().subscribe(data => {
       this.formFields = data;
       this.generateForm();
+      if (this.productId) {
+        this.addProductService.getProductDetails(this.productId).subscribe(product => {
+          this.setFormValues(product);
+        });
+      }
+    });
+  }
+  setFormValues(product: any): void {
+    this.addProductForm.setValue({
+      category: product.category,
+      productName: product.productName,
+      costPrice: product.costPrice,
+      sellingPrice: product.sellingPrice,
+      quantity: product.quantity,
+      manufacturingDate: product.manufacturingDate,
+      expiryDate: product.expiryDate
     });
   }
 
@@ -50,8 +70,8 @@ export class AdddetailsComponent implements OnInit {
 
   onSubmit(): void {
     if (this.addProductForm.valid) {
-      const value= this.addProductForm.value;
-      // console.log(this.addProductForm.value);
+      let value= this.addProductForm.value;
+      console.log(this.addProductForm.value);
       this.addProductService.addProduct(value).subscribe(response =>{
         console.log(response)
         this.router.navigate(['/addproduct']);
