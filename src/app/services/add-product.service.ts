@@ -35,4 +35,8 @@ export class AddProductService {
   addData_db_operations(payload:any):Observable<any>{
     return this.http.post<any>(`${this.apiUrl}/db_operation`,payload)
   }
+
+  getData(payload:any):Observable<any>{
+    return this.http.post<any>(`${this.apiUrl}/getdata_for_all`,payload)
+  }
 }
