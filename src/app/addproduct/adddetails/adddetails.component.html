@@ -3,7 +3,7 @@
     <div class="row mb-2">
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-left">
-          <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+          <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
           <li class="breadcrumb-item active">DataTables</li>
         </ol>
       </div>
@@ -19,7 +19,7 @@
   </div>
 </section>
 <div class="container">
-  <div class="card mt-4">
+  <div class="card">
     <div class="card-body">
       <form [formGroup]="addProductForm" (ngSubmit)="onSubmit()">
         <div class="form-group row" *ngFor="let field of formFields">
@@ -37,9 +37,10 @@
                      [formControlName]="field.name"
                      [placeholder]="field.placeholder">
             </ng-container>
-            <ng-container *ngIf="field.type !== 'text' && field.type !== 'number' && field.type !== 'date'">
-              <select class="form-control" [formControlName]="field.name">
-                <option *ngFor="let option of field.options" [value]="option.value">{{ option.label }}</option>
+            <ng-container *ngIf="field.type =='select'">
+              <select class="form-control" [formControlName]="field.name" (change)="field.name === 'category' ? onCategorySelect($event) : null">
+                <option value="" disabled selected>{{ field.placeholder }}</option>
+                <option *ngFor="let option of field.name === 'category' ? categoryOptions : productOptions" [value]="field.name === 'category' ? option.id : option.product_id">{{ field.name === 'category' ? option.name : option.product_name }}</option>
               </select>
             </ng-container>
             
@@ -56,7 +57,8 @@
             </div>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary float-right">Submit</button>
+        <button type="reset" class="btn btn-light float-right mr-2" (click)="resetform()" >Reset</button>
       </form>
       
     </div>

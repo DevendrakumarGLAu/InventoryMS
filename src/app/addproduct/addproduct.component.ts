@@ -20,7 +20,7 @@ export class AddproductComponent implements OnInit {
     'category',
     'productName',
     'costPrice',
-    'sellingPrice',
+    // 'sellingPrice',
     'quantity',
     'actions',
   ];

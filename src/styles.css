@@ -5,7 +5,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .success {
   .mdc-snackbar__surface {
+    margin-top: 40px !important;
     background-color: #4caf50 !important;
+    z-index: 100000 !important;
   }
  
   .mdc-snackbar__label {
@@ -14,7 +16,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 .error {
   .mdc-snackbar__surface {
+    margin-top: 40px !important;
     background-color: #f44336 !important;
+    z-index: 100000 !important;
+
   }
  
   .mdc-snackbar__label {

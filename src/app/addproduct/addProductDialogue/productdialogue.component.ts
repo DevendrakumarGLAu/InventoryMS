@@ -3,6 +3,7 @@
   import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   import { AddProductService } from "src/app/services/add-product.service";
+import { SnackBarService } from "src/app/services/snackbar.service";
 
   @Component({
     selector: 'app-productdialogue',
@@ -17,7 +18,8 @@
       @Inject(MAT_DIALOG_DATA) public data: any,
       private dialogRef: MatDialogRef<ProductDialogueComponent>,
       private addProductService: AddProductService,
-      private fb: FormBuilder
+      private fb: FormBuilder,
+      private snackBar: SnackBarService,
     ) {}
 
     ngOnInit(): void {
@@ -37,9 +39,24 @@
     onSubmit(): void {
       if (this.productForm.valid) {
         const productData = {
-          category: this.productForm.value.category,
-          productName: this.productForm.value.productName
+          table_name: 'productname',
+          action: 'insert',
+          column_data: {
+            name: this.productForm.value.productName,
+            category_id: this.productForm.value.category
+          }
         };
+        console.log("productData",productData)
+        this.addProductService.addData_db_operations(productData).subscribe(response=>{
+          let message = response.message;
+          if (response.status === 'success') {
+            
+            this.snackBar.openSnackBarSuccess([message]);
+          } else {
+            this.snackBar.openSnackBarError([message]);
+          }
+        });
+        
 
         this.dialogRef.close(productData);
       } 

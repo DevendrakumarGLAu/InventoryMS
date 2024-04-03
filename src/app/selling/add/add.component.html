@@ -1,1 +1,28 @@
-<p>hello from add page</p>
+<br>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <form [formGroup]="sellProductForm" (ngSubmit)="sellProduct()">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="id">Select Product Name:</label>
+                        <select class="form-control" formControlName="product_id" required (change)="onProductSelect($event)">
+                            <option value="" disabled selected>Select product</option>
+                            <option *ngFor="let option of productOptions" [value]="option.id">{{ option.productName }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="sellQuantity">Sell Quantity:</label>
+                        <input type="number" class="form-control" formControlName="sell_quantity" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="unitSellingPrice">Unit Selling Price:</label>
+                        <input type="number" class="form-control" formControlName="unit_sellingPrice" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary float-right">Sell Product</button>
+                <button type="reset" class="btn btn-light float-right mr-2" (click)="resetform()" >Reset</button>
+            </form>
+        </div>
+    </div>
+</div>

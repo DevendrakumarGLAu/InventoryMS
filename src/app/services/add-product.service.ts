@@ -39,4 +39,11 @@ export class AddProductService {
   getData(payload:any):Observable<any>{
     return this.http.post<any>(`${this.apiUrl}/getdata_for_all`,payload)
   }
+  get_products_by_category(value:any):Observable<any>{
+    return this.http.post<any>(`${this.apiUrl}/get_products_by_category`,value)
+  }
+
+  product_sales(value:any):Observable<any>{
+    return this.http.post<any>(`${this.apiUrl}/product_sales`,value)
+  }
 }
