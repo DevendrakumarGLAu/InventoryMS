@@ -1,0 +1,10 @@
+.no-data-message {
+    color: #007BFF;
+    text-align: center;
+    font-size: 18px;
+  }
+  .table-container {
+    max-height: 400px; /* Set maximum height */
+   
+    overflow-x: auto;
+}

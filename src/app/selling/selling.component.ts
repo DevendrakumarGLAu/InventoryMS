@@ -14,17 +14,21 @@ export class SellingComponent implements OnInit {
   productdata: any;
   dataSource!: MatTableDataSource<any>;
   displayedColumns: string[] = [
-    'id',
+    'Sno',
     'category',
     'productName',
     'costPrice',
     // 'sellingPrice',
     'quantity',
+    'CostPerPiece',
+    'remaining_stock',
+    'manufacturingDate',
+    'expiryDate',
     'actions',
   ];
 
-  pageSize = 5;
-  pageSizeOptions = [5, 10, 25, 100];
+  pageSize = 10;
+  pageSizeOptions = [10, 25, 100];
   length = 100;
   hasData: boolean = false;
 
