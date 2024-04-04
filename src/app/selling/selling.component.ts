@@ -46,7 +46,7 @@ export class SellingComponent implements OnInit {
     this.AddProductService.getProductData().subscribe((data: any) => {
       // this.productdata = data['data'][0];
       this.productdata = data.data;
-      console.log("this product",this.productdata);
+      // console.log("this product",this.productdata);
       this.hasData = this.productdata.length > 0;
       // this.productdata = this.productdata.data;
       this.dataSource = new MatTableDataSource(this.productdata);

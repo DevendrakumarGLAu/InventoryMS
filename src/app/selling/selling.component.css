@@ -8,3 +8,13 @@
    
     overflow-x: auto;
 }
+
+/* Add this CSS to your component's style file or global styles */
+.mat-sort-header-content{
+  background-color: skyblue !important;
+  color: white; /* Text color */
+}
+
+.mat-header-cell {
+  border-color: white; /* Border color */
+}
