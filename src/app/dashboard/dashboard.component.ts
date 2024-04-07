@@ -14,6 +14,7 @@ export class DashboardComponent implements OnInit {
   Total_productName:number=0;
   // totalCategories:any=[];
   totalProfit: number = 0;
+  Total_sale:any;
   constructor(private AddProductService: AddProductService){}
   ngOnInit(): void {
 
@@ -22,7 +23,7 @@ export class DashboardComponent implements OnInit {
       // this.productdata = this.productdata.data;
       console.log("product data dashboard",this.productdata)
       this.productdata.forEach((product: any) => {
-
+        this.Total_sale= product.Total_sales
         this.totalCostPrice += product.costPrice;
         this.totalSellingPrice += product.sellingPrice;
         let uniqueCategories:any =[];
@@ -39,14 +40,11 @@ export class DashboardComponent implements OnInit {
       // console.log("Total Unique Categories:", totalUniqueCategories);
 
         this.totalProfit += (product.sellingPrice - product.costPrice);
+        
       });
 
       // Difference between cost and profit
       const costProfitDiff = this.totalSellingPrice - this.totalCostPrice;
-      console.log("Total Cost Price:", this.totalCostPrice);
-      console.log("Total Selling Price:", this.totalSellingPrice);
-      console.log("Total Categories:", this.totalCategories);
-      console.log("Total Profit:", this.totalProfit);
       console.log("Difference between Cost and Profit:", costProfitDiff);
     });
   }

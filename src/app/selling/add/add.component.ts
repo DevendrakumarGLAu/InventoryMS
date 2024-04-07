@@ -60,10 +60,10 @@ onProductSelect(event: any) {
             // console.log("form sell value:->", this.sellProductForm.value)
         }
         const val = this.sellProductForm.value;
-        console.log("form sell value:->",this.sellProductForm.value);
+        // console.log("form sell value:->",this.sellProductForm.value);
         // return
         this.AddProductService.product_sales(val).subscribe(res => {
-            console.log("res", res);
+            // console.log("res", res);
             let message = res.message
             if (res.status === 'success') {
                 this.SnackBarService.openSnackBarSuccess([message])

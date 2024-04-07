@@ -48,6 +48,16 @@ const routes: Routes = [
         path:'selling/add',
         loadChildren: () =>
           import('../selling/add/add.module').then((m) => m.AddsellerModule),
+      },
+      {
+        path:'printbill',
+        loadChildren:()=>
+        import('../print-bill/print-bill.module').then((m) =>m.PrintBillModule)
+      },
+      {
+        path:'printbill/add',
+        loadChildren:()=>
+        import('../print-bill/add/add.module').then((m) =>m.addBillModule)
       }
     ],
   },

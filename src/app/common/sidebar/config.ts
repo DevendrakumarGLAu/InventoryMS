@@ -29,5 +29,10 @@ export const sidebarMenuConfig = [
     route: 'selling',
     icon: 'nav-icon fa fa-cart-arrow-down',
   },
+  {
+    label: 'Billing',
+    route: 'printbill',
+    icon: 'nav-icon fa-regular fa-file',
+  },
 ];
   
