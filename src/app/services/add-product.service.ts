@@ -46,4 +46,8 @@ export class AddProductService {
   product_sales(value:any):Observable<any>{
     return this.http.post<any>(`${this.apiUrl}/product_sales`,value)
   }
+
+  save_bill(value:any):Observable<any>{
+    return this.http.post<any>(`${this.apiUrl}/save_order`,value)
+  }
 }

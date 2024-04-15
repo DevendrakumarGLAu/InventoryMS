@@ -18,6 +18,8 @@ export class AddComponent implements OnInit {
 
   ngOnInit(): void {
     this.orderForm = this.fb.group({
+      name: ['', Validators.required],
+      mobile: ['', Validators.required],
       orders: this.fb.array([])
     });
 
@@ -34,7 +36,8 @@ export class AddComponent implements OnInit {
       sno: [serialNumber],
       category: ['', Validators.required],
       product: ['', Validators.required],
-      quantity: ['', [Validators.required, Validators.min(1)]]
+      quantity: ['', [Validators.required, Validators.min(1)]],
+      products: []
     });
   }
 
@@ -66,36 +69,46 @@ export class AddComponent implements OnInit {
       }
     );
   }
-  onCategorySelect(event: any) {
-    // debugger
+  onCategorySelect(event: any,index: number) {
+    const orderGroup = this.orders.at(index) as FormGroup;
     this.category_id = event.target.value;
     console.log('Selected category:', this.category_id);
-    // this.products = [];
-    // this.orderForm?.get('product')?.patchValue('');
-    // this.products = [];
     const val = {
       category_id: this.category_id
     };
-    
      this.addProductService.get_products_by_category(val).subscribe(data => {
-      console.log(data.data)
+      orderGroup.get('products')?.setValue(data.data);
        this.products = data.data;
-      // this.products.push(...productOptions);
-      
       this.orderForm.get('product')?.setValue('');
-
-
     });
   }
-  async onProductSelect(event:any) {
+   onProductSelect(event:any,index: number) {
+    const selectedProductId = event.target.value;
+  console.log('Selected product ID:', selectedProductId);
 
-
+  const orderGroup = this.orders.at(index) as FormGroup;
+  orderGroup.get('product')?.setValue(selectedProductId);
   }
-
 
   onSubmit(): void {
     if (this.orderForm.valid) {
-      console.log(this.orderForm.value);
+      const formValue = this.orderForm.value;
+    formValue.orders.forEach((order: any) => {
+      order.products = order.products || [];
+    });
+    const value ={
+      // "table_name": "order",
+      // "action": "insert",
+      // "column_data": {
+        "name": formValue.name, 
+        "mobile":formValue.mobile,
+        "order_details": formValue.orders
+      // }
+  }
+  console.log(value)
+  this.addProductService.save_bill(value).subscribe(response =>{
+    console.log(response.message)
+  })
     } else {
       this.orderForm.markAllAsTouched();
     }
