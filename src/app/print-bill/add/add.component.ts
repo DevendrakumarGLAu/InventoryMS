@@ -10,7 +10,6 @@ import { AddProductService } from '../../services/add-product.service';
 export class AddComponent implements OnInit {
   orderForm!: FormGroup;
   categories: any[] = [];
-  products: any = [];
   category_id: any;
   selectedProductId: any;
 
@@ -34,10 +33,12 @@ export class AddComponent implements OnInit {
   createOrder(serialNumber: number): FormGroup {
     return this.fb.group({
       sno: [serialNumber],
-      category: ['', Validators.required],
-      product: ['', Validators.required],
+      category_id: ['', Validators.required], // Change to category_id
+      product_id: ['', Validators.required], // Change to product_id
       quantity: ['', [Validators.required, Validators.min(1)]],
-      products: []
+      category_name: [''], // Include category_name field here
+      product_name: [''], // Include product_name field here
+      products: [[]]
     });
   }
 
@@ -56,59 +57,76 @@ export class AddComponent implements OnInit {
       control.get('sno')?.patchValue(index + 1);
     });
   }
-   getCategories() {
+
+  getCategories() {
     const val = {
       Table_name: "category"
     };
-     this.addProductService.getData(val).subscribe(
+    this.addProductService.getData(val).subscribe(
       (response: any) => {
         this.categories = response.data;
+        console.log("category", this.categories);
       },
       (error: any) => {
         console.error('Error fetching categories:', error);
       }
     );
   }
-  onCategorySelect(event: any,index: number) {
+
+  onCategorySelect(event: any, index: number) {
     const orderGroup = this.orders.at(index) as FormGroup;
     this.category_id = event.target.value;
     console.log('Selected category:', this.category_id);
+    
     const val = {
       category_id: this.category_id
     };
-     this.addProductService.get_products_by_category(val).subscribe(data => {
+    this.addProductService.get_products_by_category(val).subscribe(data => {
+      console.log(data.data);
       orderGroup.get('products')?.setValue(data.data);
-       this.products = data.data;
-      this.orderForm.get('product')?.setValue('');
+      orderGroup.get('product_id')?.setValue(''); // Reset product_id
+      orderGroup.get('product_id')?.setErrors(null);
     });
   }
-   onProductSelect(event:any,index: number) {
-    const selectedProductId = event.target.value;
-  console.log('Selected product ID:', selectedProductId);
 
-  const orderGroup = this.orders.at(index) as FormGroup;
-  orderGroup.get('product')?.setValue(selectedProductId);
+  onProductSelect(event: any, index: number) {
+    const orderGroup = this.orders.at(index) as FormGroup;
+    this.selectedProductId = event.target.value;
+    console.log('Selected product ID:', this.selectedProductId);
   }
 
   onSubmit(): void {
     if (this.orderForm.valid) {
       const formValue = this.orderForm.value;
-    formValue.orders.forEach((order: any) => {
-      order.products = order.products || [];
-    });
-    const value ={
-      // "table_name": "order",
-      // "action": "insert",
-      // "column_data": {
-        "name": formValue.name, 
-        "mobile":formValue.mobile,
-        "order_details": formValue.orders
-      // }
-  }
-  console.log(value)
-  this.addProductService.save_bill(value).subscribe(response =>{
-    console.log(response.message)
-  })
+      const ordersWithNames = this.orders.value.map((order: any) => {
+        // Find category_name from categories array
+        const selectedCategory = this.categories.find(cat => cat.id == order.category_id);
+        const category_name = selectedCategory ? selectedCategory.name : '';
+
+        // Find product_name from selected product in order
+        const selectedProduct = order.products.find((prod: any) => prod.product_id == order.product_id);
+        const product_name = selectedProduct ? selectedProduct.product_name : '';
+
+        // Exclude the products array
+        const { products, ...orderWithoutProducts } = order;
+
+        return {
+          ...orderWithoutProducts,
+          category_name,
+          product_name
+        };
+      });
+
+      const payload = {
+        name: formValue.name,
+        mobile: formValue.mobile,
+        orders: ordersWithNames
+      };
+      console.log("Payload:", payload);
+      return;
+      // this.addProductService.save_bill(value).subscribe(response =>{
+      //   console.log(response.message)
+      // })
     } else {
       this.orderForm.markAllAsTouched();
     }

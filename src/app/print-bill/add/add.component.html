@@ -46,26 +46,25 @@
                         </div>
                         <div class="col">
                             <label for="category" class="form-label">Category</label>
-                            <select formControlName="category" class="form-control" (change)="onCategorySelect($event, i)">
+                            <select formControlName="category_id" class="form-control" (change)="onCategorySelect($event, i)">
                                 <option value="" disabled selected>Select Category</option>
                                 <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
-                            </select>
-                            <div *ngIf="orders.controls[i].get('category')?.invalid && orders.controls[i].get('category')?.touched" class="text-danger">
+                              </select>
+                            <div *ngIf="orders.controls[i].get('category_id')?.invalid && orders.controls[i].get('category')?.touched" class="text-danger">
                                 Category is required.
                             </div>
                         </div>
                         <div class="col">
                             <label for="product" class="form-label">Product</label>
-                            <select formControlName="product" class="form-control" id="product" (change)="onProductSelect($event,i)" >
-                                <option *ngIf="products.length === 0" value="" disabled selected>Select Product</option>
-                                <!-- <option *ngFor="let product of products" [value]="product.product_id">{{ product.product_name }}</option> -->
-                                <option *ngFor="let product of orders.controls[i].get('products')?.value" [value]="product.product_id">{{ product.product_name }}</option>
-
-                            </select>
-                            <div *ngIf="orders.controls[i].get('product')?.invalid && orders.controls[i].get('product')?.touched" class="text-danger">
+                            <select formControlName="product_id" class="form-control" id="product_id" (change)="onProductSelect($event, i)">
+                                <option value="" disabled selected>Select Product</option>
+                                <option *ngFor="let product of order.get('products')?.value" [value]="product.product_id">{{ product.product_name }}</option>
+                              </select>
+                            <div *ngIf="orders.controls[i].get('product_id')?.invalid && orders.controls[i].get('product')?.touched" class="text-danger">
                                 Product is required.
                             </div>
                         </div>
+                        
                         <div class="col">
                             <label for="quantity" class="form-label">Quantity</label>
                             <input formControlName="quantity" type="number" class="form-control" id="quantity" placeholder="Quantity">
