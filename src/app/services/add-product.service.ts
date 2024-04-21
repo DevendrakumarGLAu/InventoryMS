@@ -50,4 +50,8 @@ export class AddProductService {
   save_bill(value:any):Observable<any>{
     return this.http.post<any>(`${this.apiUrl}/save_order`,value)
   }
+
+  getData_common(value:any):Observable<any>{
+    return this.http.post<any>(`${this.apiUrl}/getData_common`,value)
+  }
 }

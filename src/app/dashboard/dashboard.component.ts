@@ -21,7 +21,7 @@ export class DashboardComponent implements OnInit {
     this.AddProductService.getProductData().subscribe((data: any) => {
       this.productdata = data.data;
       // this.productdata = this.productdata.data;
-      console.log("product data dashboard",this.productdata)
+      // console.log("product data dashboard",this.productdata)
       this.productdata.forEach((product: any) => {
         this.Total_sale= product.Total_sales
         this.totalCostPrice += product.costPrice;
@@ -45,7 +45,7 @@ export class DashboardComponent implements OnInit {
 
       // Difference between cost and profit
       const costProfitDiff = this.totalSellingPrice - this.totalCostPrice;
-      console.log("Difference between Cost and Profit:", costProfitDiff);
+      // console.log("Difference between Cost and Profit:", costProfitDiff);
     });
   }
 }

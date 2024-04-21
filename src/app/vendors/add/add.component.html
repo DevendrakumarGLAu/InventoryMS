@@ -1,0 +1,67 @@
+<!-- <br> -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li class="breadcrumb-item"><a [routerLink]="'/admin/vendors'">Home</a></li>
+                    <li class="breadcrumb-item active"><a [routerLink]="'/admin/vendors'">DataTables</a></li>
+                </ol>
+            </div>
+            <div class="col-sm-6 ">
+                <!-- <span class="float-sm-right">
+                    <a routerLink="/admin/selling/add">
+                        <button type="button" class="btn btn-primary">Add</button>
+                    </a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</section>
+<div class="container">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <form class="row g-3" [formGroup]="vendorForm" (ngSubmit)="onSubmit()">
+                    <div class="col-md-6 mb-3">
+                        <label for="inputVendorName" class="form-label">Vendor Name</label>
+                        <input type="text" class="form-control" id="inputVendorName" formControlName="vendorName" placeholder="Enter vendor name">
+                        <!-- <div *ngIf="vendorForm.get('vendorName').invalid && vendorForm.get('vendorName').touched" class="text-danger">
+                            Vendor Name is required.
+                        </div> -->
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="inputProductName" class="form-label">Product Name</label>
+                        <input type="text" class="form-control" id="inputProductName" formControlName="productName" placeholder="Enter Product name">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="inputProductName" class="form-label">Company Name</label>
+                        <input type="text" class="form-control" id="inputProductName" formControlName="companyName" placeholder="Enter Company name">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="inputEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="inputEmail" formControlName="email" placeholder="Enter vendor'email">
+                        <!-- <div *ngIf="vendorForm.get('email').invalid && vendorForm.get('email').touched" class="text-danger">
+                            Invalid email.
+                        </div> -->
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="inputMobile" class="form-label">Mobile Number</label>
+                        <input type="text" class="form-control" id="inputMobile" formControlName="mobile"placeholder="Enter vendor's mobile number">
+                    </div>
+                   
+                   
+                    <div class="col-md-12">
+                        <span class="float-sm-right">
+                          <!-- <a routerLink="/admin/addproduct/add/"> -->
+                            <button type="button" class="btn btn-secondary mr-2" >Cancel</button>
+                            <button type="submit" class="btn btn-primary" >Add vendors</button>
+                          <!-- </a> -->
+                        </span>
+                      </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<br>

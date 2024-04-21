@@ -32,7 +32,12 @@ export const sidebarMenuConfig = [
   {
     label: 'Billing',
     route: 'printbill',
-    icon: 'nav-icon fa-regular fa-file',
+    icon: 'nav-icon fa fa-regular fa-file',
+  },
+  {
+    label: 'Vendors',
+    route: 'vendors',
+    icon: 'nav-icon fa fa-users',
   },
 ];
   

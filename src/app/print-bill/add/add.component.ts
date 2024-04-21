@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators, AbstractControl } from '@angular/forms';
 import { AddProductService } from '../../services/add-product.service';
 
 @Component({
@@ -33,11 +33,11 @@ export class AddComponent implements OnInit {
   createOrder(serialNumber: number): FormGroup {
     return this.fb.group({
       sno: [serialNumber],
-      category_id: ['', Validators.required], // Change to category_id
-      product_id: ['', Validators.required], // Change to product_id
+      category_id: ['', Validators.required],
+      product_id: ['', Validators.required],
       quantity: ['', [Validators.required, Validators.min(1)]],
-      category_name: [''], // Include category_name field here
-      product_name: [''], // Include product_name field here
+      category_name: [''],
+      product_name: [''],
       products: [[]]
     });
   }
@@ -84,7 +84,7 @@ export class AddComponent implements OnInit {
     this.addProductService.get_products_by_category(val).subscribe(data => {
       console.log(data.data);
       orderGroup.get('products')?.setValue(data.data);
-      orderGroup.get('product_id')?.setValue(''); // Reset product_id
+      orderGroup.get('product_id')?.setValue('');
       orderGroup.get('product_id')?.setErrors(null);
     });
   }
@@ -93,21 +93,28 @@ export class AddComponent implements OnInit {
     const orderGroup = this.orders.at(index) as FormGroup;
     this.selectedProductId = event.target.value;
     console.log('Selected product ID:', this.selectedProductId);
+
+    // Check for duplicate product selection
+    const selectedProductIds = this.orders.controls.map((control: AbstractControl) => control.get('product_id')?.value);
+    const duplicateIndex = selectedProductIds.findIndex((productId: any, i: number) => i !== index && productId === this.selectedProductId);
+    
+    if (duplicateIndex !== -1) {
+      orderGroup.get('product_id')?.setErrors({ duplicateProduct: true });
+    } else {
+      orderGroup.get('product_id')?.setErrors(null);
+    }
   }
 
   onSubmit(): void {
     if (this.orderForm.valid) {
       const formValue = this.orderForm.value;
       const ordersWithNames = this.orders.value.map((order: any) => {
-        // Find category_name from categories array
         const selectedCategory = this.categories.find(cat => cat.id == order.category_id);
         const category_name = selectedCategory ? selectedCategory.name : '';
 
-        // Find product_name from selected product in order
         const selectedProduct = order.products.find((prod: any) => prod.product_id == order.product_id);
         const product_name = selectedProduct ? selectedProduct.product_name : '';
 
-        // Exclude the products array
         const { products, ...orderWithoutProducts } = order;
 
         return {
@@ -123,10 +130,9 @@ export class AddComponent implements OnInit {
         orders: ordersWithNames
       };
       console.log("Payload:", payload);
-      return;
-      // this.addProductService.save_bill(value).subscribe(response =>{
-      //   console.log(response.message)
-      // })
+      this.addProductService.save_bill(payload).subscribe(response =>{
+        console.log(response.message)
+      })
     } else {
       this.orderForm.markAllAsTouched();
     }

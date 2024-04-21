@@ -59,11 +59,13 @@
                             <select formControlName="product_id" class="form-control" id="product_id" (change)="onProductSelect($event, i)">
                                 <option value="" disabled selected>Select Product</option>
                                 <option *ngFor="let product of order.get('products')?.value" [value]="product.product_id">{{ product.product_name }}</option>
-                              </select>
-                            <div *ngIf="orders.controls[i].get('product_id')?.invalid && orders.controls[i].get('product')?.touched" class="text-danger">
-                                Product is required.
+                            </select>
+                            <div *ngIf="orders.controls[i].get('product_id')?.invalid && orders.controls[i].get('product_id')?.touched" class="text-danger">
+                                <div *ngIf="orders.controls[i].get('product_id')?.errors?.['duplicateProduct']">Duplicate product selection.</div>
+                                <div *ngIf="!orders.controls[i].get('product_id')?.errors?.['duplicateProduct']">Product is required.</div>
                             </div>
                         </div>
+                        
                         
                         <div class="col">
                             <label for="quantity" class="form-label">Quantity</label>

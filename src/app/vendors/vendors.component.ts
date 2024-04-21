@@ -1,71 +1,57 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AddProductService } from '../services/add-product.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Router } from '@angular/router';
+import { AddProductService } from '../services/add-product.service';
 import { SnackBarService } from '../services/snackbar.service';
-// import { dataProcesingDelete } from './config';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-addproduct',
-  templateUrl: './addproduct.component.html',
-  styleUrls: ['./addproduct.component.css'],
+  selector: 'app-vendors',
+  templateUrl: './vendors.component.html',
+  styleUrls: ['./vendors.component.css']
 })
-export class AddproductComponent implements OnInit {
-  productdata: any;
-  dataSource!: MatTableDataSource<any>;
-  displayedColumns: string[] = [
-    'Sno',
-    'category',
-    'productName',
-    'costPrice',
-    // 'sellingPrice',
-    'quantity',
-    'CostPerPiece',
-    'manufacturingDate',
-    'expiryDate',
-    'actions',
-  ];
-
-  pageSize = 10;
-  pageSizeOptions = [10, 25, 100];
-  length = 100;
+export class VendorsComponent implements OnInit {
+  displayedColumns: string[] = ['Sno', 'vendorName', 'productName', 'companyName', 'email', 'mobile', 'actions'];
+  dataSource = new MatTableDataSource<any>([]);
+  pageSize: number = 10;
+  pageSizeOptions: number[] = [5, 10, 25, 100];
+  length: number = 0;
   hasData: boolean = false;
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort!: MatSort;
+  @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(
-    private AddProductService: AddProductService,
-    private router: Router,
-    private snackBar: SnackBarService
-  ) {}
+  constructor(private AddProductService:AddProductService,
+    private snackBar:SnackBarService,
+    private router:Router,
+    ){}
 
   ngOnInit(): void {
-    this.loaddata();
+    
+    this.loadData();
+    
   }
-  loaddata() {
-    this.AddProductService.getProductData().subscribe((data: any) => {
-      // this.productdata = data['data'][0];
-      this.productdata = data.data;
-      // console.log("this product",this.productdata);
-      this.hasData = this.productdata.length > 0;
-      // this.productdata = this.productdata.data;
-      this.dataSource = new MatTableDataSource(this.productdata);
+  loadData(){
+    const payload = {
+      Table_name:'vendors'
+    }
+    this.AddProductService.getData(payload).subscribe(data =>{
+      // console.log("data", data.data);
+      // this.dataSource = data.data;
+      this.hasData = data.data.length > 0;
+      this.dataSource = new MatTableDataSource(data.data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-    });
+    })
   }
-
   editProduct(id: number) {
-    this.router.navigate(['/addproduct/adddetails'], {
+    this.router.navigate(['/vendors/add'], {
       queryParams: { id: id },
     });
   }
   dataProcessingDeletes(id: number) {
     return {
-      table_name: 'products',
+      table_name: 'vendors',
       row_ids: id,
       action: 'delete',
     };
@@ -78,7 +64,7 @@ export class AddproductComponent implements OnInit {
         if (response.status === 'success') {
           let message = response.message;
           this.snackBar.openSnackBarSuccess([message]);
-          this.loaddata();
+          this.loadData();
         } else {
           this.snackBar.openSnackBarError([response.message]);
         }
@@ -96,4 +82,3 @@ export class AddproductComponent implements OnInit {
     }
   }
 }
-

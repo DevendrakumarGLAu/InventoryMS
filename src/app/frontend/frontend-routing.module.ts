@@ -58,7 +58,17 @@ const routes: Routes = [
         path:'printbill/add',
         loadChildren:()=>
         import('../print-bill/add/add.module').then((m) =>m.addBillModule)
-      }
+      },
+      {
+        path:'vendors',
+        loadChildren:()=>
+        import('../vendors/vendor.module').then((m) =>m.vendorModule)
+      },
+      {
+        path:'vendors/add',
+        loadChildren:()=>
+        import('../vendors/add/add.module').then((m) =>m.addVendorsModule)
+      },
     ],
   },
 ];

@@ -1,20 +1,27 @@
 .no-data-message {
-    color: #007BFF;
-    text-align: center;
-    font-size: 18px;
-  }
-  .table-container {
-    max-height: 400px; /* Set maximum height */
-   
-    overflow-x: auto;
+  color: #007BFF;
+  text-align: center;
+  font-size: 18px;
+}
+.table-container {
+  max-height: 400px; /* Set maximum height */
+ 
+  overflow-x: auto;
+}
+.customHover{
+  cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
-/* Add this CSS to your component's style file or global styles */
+.customHover:hover{
+ transform: scale(1.5);
+}
+
 .mat-sort-header-content{
-  background-color: skyblue !important;
-  color: white; /* Text color */
+background-color: skyblue !important;
+color: white; /* Text color */
 }
 
 .mat-header-cell {
-  border-color: white; /* Border color */
+border-color: white; /* Border color */
 }
