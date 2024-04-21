@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, AbstractControl } from '@angular/forms';
 import { AddProductService } from '../../services/add-product.service';
-
+import { SnackBarService } from 'src/app/services/snackbar.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
@@ -13,7 +14,9 @@ export class AddComponent implements OnInit {
   category_id: any;
   selectedProductId: any;
 
-  constructor(private fb: FormBuilder, private addProductService: AddProductService) { }
+  constructor(private fb: FormBuilder, private addProductService: AddProductService,
+    private SnackBarService:SnackBarService,
+    private router:Router) { }
 
   ngOnInit(): void {
     this.orderForm = this.fb.group({
@@ -131,7 +134,13 @@ export class AddComponent implements OnInit {
       };
       console.log("Payload:", payload);
       this.addProductService.save_bill(payload).subscribe(response =>{
-        console.log(response.message)
+        let message = response.message
+            if (response.status === 'success') {
+                this.SnackBarService.openSnackBarSuccess([message])
+                this.router.navigate(['/admin/printbill']);
+            } else {
+                this.SnackBarService.openSnackBarError([message])
+            }
       })
     } else {
       this.orderForm.markAllAsTouched();

@@ -54,4 +54,9 @@ export class AddProductService {
   getData_common(value:any):Observable<any>{
     return this.http.post<any>(`${this.apiUrl}/getData_common`,value)
   }
+
+  get_saved_order() {
+    return this.http.get<any[]>(`${this.apiUrl}/get_saved_order`);
+  }
+
 }

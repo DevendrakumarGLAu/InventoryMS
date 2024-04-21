@@ -18,3 +18,60 @@
         </div>
     </div>
 </section>
+
+<section class="container">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <div class="mat-elevation-z8">
+                    <mat-form-field>
+                        <mat-label>Search</mat-label>
+                        <input matInput placeholder="Search" (input)="applyFilter($event)" />
+                    </mat-form-field>
+
+                    <div class="table-container">
+                        <table *ngIf="hasData; else noDataMessage" mat-table [dataSource]="dataSource" matSort
+                            id="example1" class="table table-bordered border-primary table-striped text-center">
+                            <ng-container matColumnDef="Sno">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">S.no.</th>
+                                <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="category_id">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Category ID</th>
+                                <td mat-cell *matCellDef="let element">{{ element.category_id }}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="category_name">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Category Name</th>
+                                <td mat-cell *matCellDef="let element">{{ element.category_name }}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="product_id">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Product ID</th>
+                                <td mat-cell *matCellDef="let element">{{ element.product_id }}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="product_name">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Product Name</th>
+                                <td mat-cell *matCellDef="let element">{{ element.product_name }}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="quantity">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Quantity</th>
+                                <td mat-cell *matCellDef="let element">{{ element.quantity }}</td>
+                            </ng-container>
+                            <!-- Add more columns as needed -->
+                            <!-- Remember to update displayedColumns accordingly -->
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                        <ng-template #noDataMessage>
+                            <p class="no-data-message">No data found.</p>
+                        </ng-template>
+                    </div>
+
+                    <mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                        [pageIndex]="0"></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<br>
