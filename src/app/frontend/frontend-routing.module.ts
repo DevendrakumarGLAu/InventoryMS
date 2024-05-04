@@ -69,6 +69,16 @@ const routes: Routes = [
         loadChildren:()=>
         import('../vendors/add/add.module').then((m) =>m.addVendorsModule)
       },
+      {
+        path:'user-details',
+        loadChildren:()=>
+        import('../user-details/user-details.module').then((m) =>m.userDetailsModule)
+      },
+      {
+        path:'user-details/add',
+        loadChildren:()=>
+        import('../user-details/add/add.module').then((m) =>m.addUserModule)
+      },
     ],
   },
 ];

@@ -1,4 +1,4 @@
-import { Component, Inject } from "@angular/core";
+import { Component, Inject, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { AddProductService } from "src/app/services/add-product.service";
@@ -9,7 +9,7 @@ import { SnackBarService } from "src/app/services/snackbar.service";
   templateUrl: './add-category.component.html',
   styleUrls: ['./add-category.component.css'],
 })
-export class AddCategoryDialogueComponent {
+export class AddCategoryDialogueComponent implements OnInit {
   categoryForm!: FormGroup;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -22,6 +22,15 @@ export class AddCategoryDialogueComponent {
     this.categoryForm = this.fb.group({
       category: ['', Validators.required],
     });
+  }
+  ngOnInit(): void {
+    const val ={
+      Table_name:"category"
+    }
+    this.AddProductService.getData_common(val).subscribe(data=>{
+      console.log(data.data)
+    })
+
   }
 
   closeDialog(): void {

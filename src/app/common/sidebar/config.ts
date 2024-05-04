@@ -39,5 +39,10 @@ export const sidebarMenuConfig = [
     route: 'vendors',
     icon: 'nav-icon fa fa-users',
   },
+  {
+    label: 'user-details',
+    route: 'user-details',
+    icon: 'nav-icon fa fa-users',
+  },
 ];
   
