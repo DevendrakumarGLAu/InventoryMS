@@ -1,5 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
+import { MaterialModule } from "../material.module";
 import { UserDetailsComponent } from "./user-details.component";
 import { userDetailsRouting } from "./user-details.routing.module";
 
@@ -7,7 +8,7 @@ import { userDetailsRouting } from "./user-details.routing.module";
     
     exports: [],
     declarations: [UserDetailsComponent],
-    imports:[CommonModule,
+    imports:[CommonModule,MaterialModule,
     userDetailsRouting]
 })
 
