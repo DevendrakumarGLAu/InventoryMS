@@ -20,6 +20,11 @@ export const sidebarMenuConfig = [
     icon: 'nav-icon fas fa-chart-pie',
   },
   {
+    label: 'Users',
+    route: 'user-details',
+    icon: 'nav-icon fa fa-user-plus',
+  },
+  {
     label: 'Add Product',
     route: 'addproduct',
     icon: 'nav-icon far fa-plus-square',
@@ -37,12 +42,8 @@ export const sidebarMenuConfig = [
   {
     label: 'Vendors',
     route: 'vendors',
-    icon: 'nav-icon fa fa-users',
+    icon: 'nav-icon fa fa-user-md',
   },
-  {
-    label: 'user-details',
-    route: 'user-details',
-    icon: 'nav-icon fa fa-users',
-  },
+  
 ];
   
