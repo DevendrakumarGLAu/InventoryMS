@@ -15,11 +15,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
 import { loginModule } from './common/login/login.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BackButtonDirective } from './directives/back-button.directive';
+import { LoaderComponent } from './common/loader/loader.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    LoaderComponent
+    // BackButtonDirective
     // HeaderComponent,
     // SidebarComponent,
     // FooterComponent,

@@ -31,8 +31,23 @@
                         </div> -->
                     </div>
                     <div class="col-md-6 mb-3">
+                        <label for="inputcategoryName" class="form-label">Category Name <span class="text-danger">*</span> </label>
+                        <select name="" class="form-control" id="inputVendorName" formControlName="category_id" (change)="onCategorySelect($event)" >
+                            <option value="" disabled selected>Please select Category name</option>
+                            <option *ngFor="let category of categoryOptions" value="{{category.id}}">{{category.name}}</option>
+                        </select>
+                    </div>
+
+                    <!-- <div class="col-md-6 mb-3">
                         <label for="inputProductName" class="form-label">Product Name</label>
                         <input type="text" class="form-control" id="inputProductName" formControlName="productName" placeholder="Enter Product name">
+                    </div> -->
+                     <div class="col-md-6 mb-3">
+                        <label for="inputProductName" class="form-label">Product Name</label>
+                        <select name="" class="form-control" id="inputProductName" formControlName="product_id">
+                            <option value="" selected disabled>Please select Product name</option>
+                            <option *ngFor="let product of productOptions" value="{{product.product_id}}">{{product.product_name}} </option>
+                        </select>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="inputProductName" class="form-label">Company Name</label>
@@ -54,8 +69,8 @@
                     <div class="col-md-12">
                         <span class="float-sm-right">
                           <!-- <a routerLink="/admin/addproduct/add/"> -->
-                            <button type="button" class="btn btn-secondary mr-2" >Cancel</button>
-                            <button type="submit" class="btn btn-primary" >Add vendors</button>
+                            <button type="button" class="btn btn-secondary mr-2" appBackButton >Cancel</button>
+                            <button type="submit" class="btn btn-primary">{{ flag === 'edit' ? 'Update Vendor' : 'Add Vendor' }}</button>
                           <!-- </a> -->
                         </span>
                       </div>

@@ -44,6 +44,7 @@ export class AdddetailsComponent implements OnInit {
       this.categories = response.data;
       this.categoryOptions = this.categories;
 
+      
     });
     this.activatedRoute.queryParams.subscribe((params) => {
       this.productId = params['id'];
