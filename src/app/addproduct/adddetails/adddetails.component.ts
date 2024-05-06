@@ -24,7 +24,8 @@ export class AdddetailsComponent implements OnInit {
   productOptions: any[] = [];
   categoryOptions: any[] = [];
   selectedCategoryId: any;
-  selectedCategory: any
+  selectedCategory: any;
+  flag!:string
 
   constructor(
     private fb: FormBuilder,
@@ -48,6 +49,7 @@ export class AdddetailsComponent implements OnInit {
     });
     this.activatedRoute.queryParams.subscribe((params) => {
       this.productId = params['id'];
+      this.flag =params['flag']
       // console.log("edit id", this.productId)
       if (this.productId) {
         // debugger
@@ -136,11 +138,21 @@ export class AdddetailsComponent implements OnInit {
           this.isRequired = true;
         }
       });
-      formGroupConfig[field.name] = ['', validationsArray];
+      if (field.type === 'select') {
+        // Pre-select the value for 'productName' field if editing
+        if (field.name === 'productName' && this.response.productName) {
+          formGroupConfig[field.name] = [this.response.product_id, validationsArray];
+        } else {
+          formGroupConfig[field.name] = ['', validationsArray];
+        }
+      } else {
+        formGroupConfig[field.name] = ['', validationsArray];
+      }
       field.isRequired = this.isRequired;
     });
     this.addProductForm = this.fb.group(formGroupConfig);
   }
+  
   onSubmit(): void {
     if (this.addProductForm.valid) {
       let value = this.addProductForm.value;

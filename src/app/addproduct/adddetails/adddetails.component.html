@@ -22,9 +22,9 @@
   <div class="card">
     <div class="card-body">
       <form [formGroup]="addProductForm" (ngSubmit)="onSubmit()">
-        <div class="form-group row" *ngFor="let field of formFields">
-          <label class="col-sm-3 col-form-label">{{ field.label }} <span class="text-danger">{{ field.isRequired ? '*' : '' }}</span></label>
-          <div class="col-sm-8">
+        <div class="form-row">
+          <div class="form-group col-md-6" *ngFor="let field of formFields">
+            <label>{{ field.label }} <span class="text-danger">{{ field.isRequired ? '*' : '' }}</span></label>
             <ng-container *ngIf="field.type === 'text' || field.type === 'number'">
               <input class="form-control"
                      [type]="field.type"
@@ -39,7 +39,7 @@
             </ng-container>
             <ng-container *ngIf="field.type =='select'">
               <select class="form-control" [formControlName]="field.name" (change)="field.name === 'category' ? onCategorySelect($event) : null">
-                <option value="" disabled selected>{{ field.placeholder }}</option>
+                <option value="" disabled >{{ field.placeholder }}</option>
                 <option *ngFor="let option of field.name === 'category' ? categoryOptions : productOptions" [value]="field.name === 'category' ? option.id : option.product_id">{{ field.name === 'category' ? option.name : option.product_name }}</option>
               </select>
             </ng-container>
@@ -50,17 +50,16 @@
                   {{ validation.message }}
                 </div>
               </div>
-              <!-- Additional check for 'required' validation -->
               <div *ngIf="addProductForm.get(field.name)?.hasError('required') && !addProductForm.get(field.name)?.touched">
                 {{ field.label }} is required
               </div>
             </div>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary float-right">Submit</button>
-        <button type="reset" class="btn btn-light float-right mr-2" (click)="resetform()" >Reset</button>
+        <button type="submit" class="btn btn-primary float-right">{{flag === 'edit' ? 'Update Product' : 'Add Product'}}</button>
+        <button type="reset" class="btn btn-light float-right mr-2" (click)="resetform()">Reset</button>
       </form>
-      
     </div>
   </div>
 </div>
+<br>
