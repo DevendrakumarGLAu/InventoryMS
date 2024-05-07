@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class UserDetailsComponent implements OnInit {
 userData: any;
-hasData:boolean = false;
+hasData: boolean = false;
 displayedColumns: string[] = ['Sno', 'name', 'email', 'phone','address','role', 'action'];
 dataSource!: MatTableDataSource<any>;
 pageSize = 10;
@@ -37,6 +37,7 @@ length = 100;
       this.userData = data.data;
       console.log("this userData",this.userData);
       this.hasData = this.userData.length > 0;
+      // console.log("has data", this.hasData)
       // this.productdata = this.productdata.data;
       this.dataSource = new MatTableDataSource(this.userData);
       this.dataSource.paginator = this.paginator;

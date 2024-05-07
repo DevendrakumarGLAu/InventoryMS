@@ -26,8 +26,8 @@
                     <mat-label>Search</mat-label>
                     <input matInput placeholder="Search" (input)="applyFilter($event)" />
                 </mat-form-field>
-                <div class="table-container">
-                    <table *ngIf="hasData; else noDataMessage" mat-table [dataSource]="dataSource" matSort
+                <div class="table-container" *ngIf="hasData; else noDataMessage">
+                    <table  mat-table [dataSource]="dataSource" matSort
                         id="example1" class="table table-bordered border-primary table-striped text-center">
                         <!-- <ng-container matColumnDef="id">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
@@ -74,11 +74,12 @@
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     </table>
-                    <ng-template #noDataMessage>
-                        <p class="no-data-message">No data found.</p>
-                    </ng-template>
+                    
                     
                 </div>
+                <ng-template #noDataMessage>
+                    <p class="no-data-message">No data found.</p>
+                </ng-template>
                 <mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
                 [pageIndex]="0"></mat-paginator>
             </div>

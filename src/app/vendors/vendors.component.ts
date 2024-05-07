@@ -33,7 +33,7 @@ export class VendorsComponent implements OnInit {
   }
   loadData(){
     const payload = {
-      Table_name:'vendor2'
+      Table_name:'vendors'
     }
     this.AddProductService.getData(payload).subscribe(data =>{
       // console.log("data", data.data);

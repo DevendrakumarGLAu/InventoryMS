@@ -42,7 +42,7 @@ export class AddComponent implements OnInit {
       if(this.vendorId){
         const val ={
           "id": this.vendorId,
-          "Table_name": "vendor2"
+          "Table_name": "vendors"
         }
         this.AddProductService.getData_common(val).subscribe(response=>{
           const vendorData = response.data[0];
@@ -109,7 +109,7 @@ export class AddComponent implements OnInit {
       const formData = this.vendorForm.value;
       // console.log(formData)
       const val = {
-        "table_name": "vendor2",
+        "table_name": "vendors",
         "action": 'insert',
         "column_data": {
           vendorName: formData.vendorName,

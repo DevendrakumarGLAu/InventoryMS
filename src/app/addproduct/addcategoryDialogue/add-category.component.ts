@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { AddProductService } from "src/app/services/add-product.service";
 import { SnackBarService } from "src/app/services/snackbar.service";
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-add-category',
@@ -11,6 +12,9 @@ import { SnackBarService } from "src/app/services/snackbar.service";
 })
 export class AddCategoryDialogueComponent implements OnInit {
   categoryForm!: FormGroup;
+  // categories: any[] = [];
+  categories!: MatTableDataSource<any>;
+  displayedColumns: string[] = ['sno', 'name','Action'];
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
@@ -24,14 +28,22 @@ export class AddCategoryDialogueComponent implements OnInit {
     });
   }
   ngOnInit(): void {
+    if (this.data && this.data.category) {
+      // If category data is provided, prefill the form fields for editing
+      this.categoryForm.patchValue({
+        category: this.data.category.name
+      });
+    }
     const val ={
       Table_name:"category"
     }
     this.AddProductService.getData_common(val).subscribe(data=>{
       console.log(data.data)
+      this.categories = new MatTableDataSource(data.data);
     })
 
   }
+  
 
   closeDialog(): void {
     this.dialogRef.close();
