@@ -67,7 +67,7 @@ export const sidebarMenuConfig = [
         icon: 'nav-icon fa fa-address-card',
       },
       {
-        label: 'Permission',
+        label: 'Role Permission',
         route: 'permission',
         icon: 'nav-icon fa fa-key',
       },

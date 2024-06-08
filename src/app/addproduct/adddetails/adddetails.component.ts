@@ -25,7 +25,7 @@ export class AdddetailsComponent implements OnInit {
   categoryOptions: any[] = [];
   selectedCategoryId: any;
   selectedCategory: any;
-  flag!:string
+  flag!: string
 
   constructor(
     private fb: FormBuilder,
@@ -44,15 +44,11 @@ export class AdddetailsComponent implements OnInit {
     this.addProductService.getData(val).subscribe(response => {
       this.categories = response.data;
       this.categoryOptions = this.categories;
-
-      
     });
     this.activatedRoute.queryParams.subscribe((params) => {
       this.productId = params['id'];
-      this.flag =params['flag']
-      // console.log("edit id", this.productId)
+      this.flag = params['flag']
       if (this.productId) {
-        // debugger
         this.addProductService.getProductById(this.productId)
           .subscribe((product: any) => {
             this.response = product.data[0];
@@ -62,24 +58,21 @@ export class AdddetailsComponent implements OnInit {
               if (key === 'manufacturingDate' || key === 'expiryDate') {
                 const formattedDate = this.datePipe.transform(this.response[key], 'yyyy-MM-dd');
                 formValues[key] = formattedDate;
-              } 
+              }
               else if (key === 'category') {
-            this.categoryOptions = [{ id: this.response['category_id'], name: this.response['category'] }];
+                this.categoryOptions = [{ id: this.response['category_id'], name: this.response['category'] }];
                 formValues['category'] = this.categoryOptions
-                console.log("category",formValues['category'])
-            } else if (key === 'productName') {
-              formValues['productName'] = this.response['productName'];
-                console.log("productName",formValues['productName'])
+                console.log("category", formValues['category'])
+              } else if (key === 'productName') {
+                formValues['productName'] = this.response['productName'];
+                console.log("productName", formValues['productName'])
                 this.productOptions = [{ product_id: this.response['product_id'], product_name: this.response['productName'] }];
                 formValues['productName'] = this.productOptions
-            }
+              }
               else {
                 formValues[key] = this.response[key];
               }
             });
-            // this.productOptions = [{ product_id: this.response['product_id'], product_name: this.response['productName'] }];
-            // console.log("this.productOptions:->",this.productOptions)
-           
             this.addProductForm.patchValue(formValues);
           });
       }
@@ -92,7 +85,6 @@ export class AdddetailsComponent implements OnInit {
   async onCategorySelect(event: any) {
     this.selectedCategoryId = event.target.value;
     this.selectedCategory = await this.categoryOptions.find(option => option.id === parseInt(this.selectedCategoryId));
-    // console.log("Selected category:", this.selectedCategory);
     await this.getProduct_name();
   }
   async getProduct_name() {
@@ -101,7 +93,6 @@ export class AdddetailsComponent implements OnInit {
     }
     await this.addProductService.get_products_by_category(val).subscribe(res => {
       this.productOptions = res.data;
-      // console.log("product option", this.productOptions)
       let message = res.message;
       if (res.status === 'success') {
         this.snackBar.openSnackBarSuccess([message]);
@@ -139,7 +130,6 @@ export class AdddetailsComponent implements OnInit {
         }
       });
       if (field.type === 'select') {
-        // Pre-select the value for 'productName' field if editing
         if (field.name === 'productName' && this.response.productName) {
           formGroupConfig[field.name] = [this.response.product_id, validationsArray];
         } else {
@@ -152,7 +142,6 @@ export class AdddetailsComponent implements OnInit {
     });
     this.addProductForm = this.fb.group(formGroupConfig);
   }
-  
   onSubmit(): void {
     if (this.addProductForm.valid) {
       let value = this.addProductForm.value;
@@ -167,8 +156,6 @@ export class AdddetailsComponent implements OnInit {
       if (this.productId > 0) {
         value.id = this.productId;
       }
-      // console.log("value",value)
-      
       this.addProductService.addProduct(value).subscribe((response: any) => {
         console.log(response);
         let message = response.message;
@@ -183,7 +170,7 @@ export class AdddetailsComponent implements OnInit {
       this.addProductForm.markAllAsTouched();
     }
   }
-  resetform(){
+  resetform() {
     this.addProductForm.reset(this.addProductForm.value);
-}
+  }
 }

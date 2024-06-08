@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
     this.authService.loginAuth(val).subscribe(
       (res) => {
         if (res.status === 'success') {
+          localStorage.setItem('token', res.token);
           let message = res.message;
           this.snackBar.openSnackBarSuccess([message]);
           this.router.navigate(['/admin']);

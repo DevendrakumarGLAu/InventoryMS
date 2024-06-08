@@ -20,12 +20,11 @@ export class AuthService {
   }
 
   logout(): void {
-    // Clear user authentication status
+    localStorage.removeItem('token');
     this.loggedIn = false;
   }
 
   isAuthenticated(): boolean {
-    // Check if the user is logged in
-    return this.loggedIn;
+    return !!localStorage.getItem('token');
   }
 }

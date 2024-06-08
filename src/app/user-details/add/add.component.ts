@@ -15,7 +15,7 @@ export class AddComponent implements OnInit {
   userId: any;
   flag!: string;
   buttonText!:string;
-
+  rolesData: any[] = [];
   constructor(private fb: FormBuilder,
     private AddProductService: AddProductService,
     private router: Router,
@@ -25,6 +25,7 @@ export class AddComponent implements OnInit {
   ngOnInit(): void {
     this.getuserData();
     this.InitializeForm();
+    this.getRoles();
   }
   getuserData() {
     this.activatedRoute.queryParams.subscribe(params => {
@@ -56,6 +57,16 @@ export class AddComponent implements OnInit {
     // }, { 
     //   validators: this.passwordMatchValidator // Custom validator for matching passwords
     });
+  }
+  getRoles(){
+    const value = {
+      Table_name: 'roles',
+    }
+    this.AddProductService.getData_common(value).subscribe((data: any) => {
+      console.log(data.data);
+      this.rolesData = data.data; // Store roles data
+        console.log(this.rolesData);
+    })
   }
 
   passwordMatchValidator(): ValidatorFn {

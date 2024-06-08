@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './common/header/header.component';
 import { SidebarComponent } from './common/sidebar/sidebar.component';
 import { FooterComponent } from './common/footer/footer.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
@@ -17,8 +17,8 @@ import { loginModule } from './common/login/login.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BackButtonDirective } from './directives/back-button.directive';
 import { LoaderComponent } from './common/loader/loader.component';
-
-
+import { AuthInterceptor } from './auth.interceptor';
+import { LoaderService } from './services/loader.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +41,7 @@ import { LoaderComponent } from './common/loader/loader.component';
     loginModule,
     MatSnackBarModule,
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },LoaderService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
