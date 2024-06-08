@@ -1,0 +1,52 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-left">
+                    <li class="breadcrumb-item"><a [routerLink]="'/admin/dashboard'">Home</a></li>
+                    <li class="breadcrumb-item active"><a [routerLink]="'/admin/roles'">DataTables</a></li>
+                </ol>
+            </div>
+            <div class="col-sm-6 ">
+                <!-- <span class="float-sm-right">
+                    <a routerLink="/admin/selling/add">
+                        <button type="button" class="btn btn-primary">Add</button>
+                    </a>
+                </span> -->
+            </div>
+        </div>
+    </div>
+</section>
+<div class="container">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <form [formGroup]="roleForm" (ngSubmit)="onSubmit()" >
+                    <div class="row">
+                    <div class="col-md-6">
+                      <label for="role_name" class="form-label">Role Name  </label>
+                      <input type="text" class="form-control" id="role_name" formControlName="role_name" placeholder="Please Enter Role Name">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="role_status" class="form-label">Select Status  </label>
+                        <select class="form-control form-select-sm" aria-label="Default select example" formControlName="status">
+                            <option selected value="">Select status</option>
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                          </select>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <span class="float-sm-right">
+                            <button type="reset" class="btn btn-secondary mr-2">Reset</button>
+                            <button type="submit" class="btn btn-primary">{{flag ? 'Update' : 'Submit'}} </button>
+
+                        </span>
+                      <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
+                    </div>
+                </div>
+                  </form>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
