@@ -94,5 +94,4 @@ export const sidebarMenuConfig = [
     icon: 'nav-icon fa fa-user-md',
   },
 ];
-
   

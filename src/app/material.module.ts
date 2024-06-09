@@ -4,6 +4,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
     imports: [
@@ -16,7 +19,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
       MatInputModule,
       MatTableModule,
       MatIconModule,
-      MatFormFieldModule
+      MatFormFieldModule,
+      MatCheckboxModule,
+      MatExpansionModule,
+      FormsModule
       // Add other Material modules you want to export
     ]
   })

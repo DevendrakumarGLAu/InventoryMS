@@ -89,6 +89,11 @@ const routes: Routes = [
         loadChildren:()=>
         import('../roles/add/addRole.module').then((m) =>m.addRoleModule)
       },
+      {
+        path:'permission',
+        loadChildren:()=>
+        import('../rolePermission/rolepermission.module').then((m) =>m.rolePermissionModule)  
+      }
     ],
   },
 ];
