@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   submitted: boolean = false;
   errorMessage: string = '';
+  passwordHidden = true;
 
   constructor(
     private authService: AuthService,
@@ -30,6 +31,11 @@ export class LoginComponent implements OnInit {
 
   get f() {
     return this.loginForm.controls;
+  }
+  togglePasswordVisibility(): void {
+    this.passwordHidden = !this.passwordHidden;
+    const passwordInput = document.getElementById('password') as HTMLInputElement;
+    passwordInput.type = this.passwordHidden ? 'password' : 'text';
   }
 
   onSubmit() {

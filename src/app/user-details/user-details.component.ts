@@ -18,6 +18,7 @@ dataSource!: MatTableDataSource<any>;
 pageSize = 10;
 pageSizeOptions = [10, 25, 100];
 length = 100;
+roleid:any
 @ViewChild(MatPaginator) paginator!: MatPaginator;
 @ViewChild(MatSort, { static: true }) sort!: MatSort;
   constructor(private AddProductService:AddProductService,
@@ -29,13 +30,27 @@ length = 100;
   }
 
   loadData(){
+    const role_payload = {
+      Table_name: 'roles',
+    }
+    this.AddProductService.getData_common(role_payload).subscribe(data =>{
+      this.roleid = data.data[0]['id']
+      console.log(data.data)
+    })
     const value = {
       Table_name: 'users_details',
     }
     this.AddProductService.getData_common(value).subscribe(data => {
-      // this.dataSource = data.data;
       this.userData = data.data;
       console.log("this userData",this.userData);
+      const roleId = this.roleid.id;
+  const roleName = this.roleid.role_name;
+
+  this.userData.forEach((user: any) => {
+    if (user.role == roleId) {
+      user.role = roleName;
+    }
+  });
       this.hasData = this.userData.length > 0;
       // console.log("has data", this.hasData)
       // this.productdata = this.productdata.data;

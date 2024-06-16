@@ -10,11 +10,11 @@ export class LoaderComponent {
 
   loading:boolean = false;
 
-  constructor(public LoaderService:LoaderService){
+  constructor(private loaderService:LoaderService){
   }
   ngOnInit(){
-    this.LoaderService.getisLoading().subscribe(loading =>{
-      this.loading=loading;
+    this.loaderService.getisLoading().subscribe(loading => {
+      this.loading = loading;
       console.log(this.loading,"loader")
     })
   }

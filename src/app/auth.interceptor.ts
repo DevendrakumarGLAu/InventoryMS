@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-
+import { catchError, finalize } from 'rxjs/operators';
+import { LoaderService } from './services/loader.service';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor() {}
+  constructor(private loaderService: LoaderService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    this.loaderService.showLoader();// Show loader before HTTP request
+
     // Add authorization token to headers if available
     const token = localStorage.getItem('token');
     if (token) {
@@ -19,14 +21,15 @@ export class AuthInterceptor implements HttpInterceptor {
       });
     }
 
-    // Continue with the request and handle any errors
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
-        // Handle 401 Unauthorized errors or any other errors here
         if (error.status === 401) {
-          // Redirect to login page, show error message, etc.
+          // Handle 401 Unauthorized error if needed
         }
         return throwError(error);
+      }),
+      finalize(() => {
+        this.loaderService.hideLoader(); // Hide loader after HTTP request completes (success or error)
       })
     );
   }
