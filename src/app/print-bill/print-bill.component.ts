@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./print-bill.component.css']
 })
 export class PrintBillComponent implements OnInit {
-  displayedColumns: string[] = ['Sno', 'category_id', 'category_name', 'product_id', 'product_name', 'quantity'];
+  displayedColumns: string[] = ['Sno','name', 'mobile', 'actions'];
   dataSource!: MatTableDataSource<any>;
   hasData: boolean = false;
   productdata: any;
@@ -32,11 +32,17 @@ export class PrintBillComponent implements OnInit {
   }
 
   loadData() {
-    this.AddProductService.get_saved_order().subscribe((data: any) => {
+    const val = {
+      Table_name: "customer_orders_bill"
+  }
+  this.AddProductService.getData_common(val).subscribe(data =>{
+    console.log(data.data)
+  // })
+  //   this.AddProductService.get_saved_order().subscribe((data: any) => {
       this.productdata = data.data;
       console.log("this product", this.productdata);
-      this.hasData = this.productdata.orders.length > 0;
-      this.dataSource = new MatTableDataSource(this.productdata.orders);
+      this.hasData = this.productdata.length > 0;
+      this.dataSource = new MatTableDataSource(this.productdata);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });

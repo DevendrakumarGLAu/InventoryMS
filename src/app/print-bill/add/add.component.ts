@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, AbstractControl } from '@angular/forms';
 import { AddProductService } from '../../services/add-product.service';
 import { SnackBarService } from 'src/app/services/snackbar.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
@@ -13,9 +13,14 @@ export class AddComponent implements OnInit {
   categories: any[] = [];
   category_id: any;
   selectedProductId: any;
+  productId:any;
+  BillId:any;
+  flag!:string;
+
 
   constructor(private fb: FormBuilder, private addProductService: AddProductService,
     private SnackBarService:SnackBarService,
+    private activatedRoute:ActivatedRoute,
     private router:Router) { }
 
   ngOnInit(): void {
@@ -27,10 +32,43 @@ export class AddComponent implements OnInit {
 
     this.addOrder();
     this.getCategories();
+    this.getBillData()
   }
+  
 
   get orders(): FormArray {
     return this.orderForm.get('orders') as FormArray;
+  }
+  getBillData(){
+    this.activatedRoute.queryParams.subscribe((params: any) => {
+      this.BillId = params['id'];
+      this.flag = params['flag'];
+    })
+    if (this.flag == 'edit') {
+      const val = {
+        Table_name: 'customer_orders_bill',
+        id: this.BillId
+      }
+      this.addProductService.getData_common(val).subscribe((data: any) => {
+        console.log(data.data)
+        const billData = data.data[0];
+        this.orderForm.patchValue({
+          name: billData.name,
+          mobile: billData.mobile
+        });
+        if (billData.orders && Array.isArray(billData.orders)) {
+          billData.orders.forEach((order:any) =>{
+            const newOrderGroup = this.createOrder(order.sno);
+            newOrderGroup.patchValue({
+              category_id: order.category_id,
+              product_id: order.product_id,
+              quantity: order.quantity
+            });
+            this.orders.push(newOrderGroup);
+          })
+        }
+      })
+    }
   }
 
   createOrder(serialNumber: number): FormGroup {
@@ -133,6 +171,28 @@ export class AddComponent implements OnInit {
         orders: ordersWithNames
       };
       console.log("Payload:", payload);
+      const val = {
+        table_name: 'customer_orders_bill',
+        action: 'insert',
+        id: 0,
+        column_data: this.orderForm.value
+      }
+      console.log(val)
+      if(this.productId){
+        val['id'] = this.productId
+        val['action'] = 'update'
+      }
+      this.addProductService.addData_db_operations(val).subscribe(response =>{
+        let message = response.message
+            if (response.status === 'success') {
+                this.SnackBarService.openSnackBarSuccess([message])
+                this.router.navigate(['/admin/printbill']);
+            } else {
+                this.SnackBarService.openSnackBarError([message])
+            }
+      })
+      
+      return
       this.addProductService.save_bill(payload).subscribe(response =>{
         let message = response.message
             if (response.status === 'success') {
