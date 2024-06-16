@@ -56,7 +56,11 @@ export class AddComponent implements OnInit {
           name: billData.name,
           mobile: billData.mobile
         });
+        if (billData.orders && typeof billData.orders === 'string') {
+          billData.orders = JSON.parse(billData.orders.replace(/\\/g, ''));
+        }
         if (billData.orders && Array.isArray(billData.orders)) {
+          this.orders.clear();
           billData.orders.forEach((order:any) =>{
             const newOrderGroup = this.createOrder(order.sno);
             newOrderGroup.patchValue({
