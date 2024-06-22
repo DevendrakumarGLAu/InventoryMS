@@ -3,10 +3,13 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse
 import { Observable, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { LoaderService } from './services/loader.service';
+import { Router } from '@angular/router';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private loaderService: LoaderService) {}
+  constructor(private loaderService: LoaderService,
+    private router:Router
+  ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.loaderService.showLoader();// Show loader before HTTP request
@@ -24,7 +27,7 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
-          // Handle 401 Unauthorized error if needed
+          this.router.navigate(['/login']);
         }
         return throwError(error);
       }),

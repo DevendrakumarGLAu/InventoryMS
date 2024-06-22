@@ -15,7 +15,7 @@ export class LoaderComponent {
   ngOnInit(){
     this.loaderService.getisLoading().subscribe(loading => {
       this.loading = loading;
-      console.log(this.loading,"loader")
+      // console.log(this.loading,"loader")
     })
   }
 }

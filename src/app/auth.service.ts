@@ -22,6 +22,7 @@ export class AuthService {
         // Extract token and permissions from the response
         const { token, permissions } = response;
         if (token) {
+          localStorage.setItem('AccountId',response.data[0].id)
           localStorage.setItem('token', token); // Store token in localStorage
           this.loggedIn = true; // Update login status
         }

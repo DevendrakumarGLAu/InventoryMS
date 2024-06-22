@@ -58,5 +58,8 @@ export class AddProductService {
   get_saved_order() {
     return this.http.get<any[]>(`${this.apiUrl}/get_saved_order`);
   }
+  sidebarConfig(id:any){
+    return this.http.post<any>(`${this.apiUrl}/sidebarMenuConfig`,id);
+  }
 
 }
