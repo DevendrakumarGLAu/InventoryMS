@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {sidebarMenuConfig} from './config'
 import { AddProductService } from 'src/app/services/add-product.service';
+// import { Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 interface MenuItem {
   label: string;
   route: string;
@@ -17,7 +20,12 @@ export class SidebarComponent implements OnInit {
   
   // sidebaritems = sidebarMenuConfig;
   sidebaritems:any = [];
-  constructor(private AddProductService:AddProductService){}
+  activeMenuId: number | null = null;
+  // route!: string;
+  constructor(private AddProductService:AddProductService,
+    private router:Router,
+    private route:ActivatedRoute
+  ){}
 
   // toggleSubmenu(event: MouseEvent, menuItem: MenuItem) {
   //   event.preventDefault();
@@ -33,5 +41,14 @@ export class SidebarComponent implements OnInit {
       console.log(data)
       this.sidebaritems = data
     })
+    this.getActiveMenuId()
+  }
+  getActiveMenuId(): void {
+    const queryParams = this.route.snapshot.queryParams;
+    if (queryParams?.['menuid']) {
+      this.activeMenuId = parseInt(atob(queryParams?.['menuid']), 10);
+    } else {
+      this.activeMenuId = null;
+    }
   }
 }

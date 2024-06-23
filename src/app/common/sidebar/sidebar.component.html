@@ -55,7 +55,10 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
           <ng-container *ngFor="let menuItem of sidebaritems">
             <li class="nav-item" *ngIf="menuItem.view === 1">
-              <a *ngIf="!menuItem.childmenu || menuItem.childmenu.length === 0" [routerLink]="menuItem.route" routerLinkActive="active" class="nav-link">
+              <a *ngIf="!menuItem.childmenu || menuItem.childmenu.length === 0" [routerLink]="menuItem.route"
+              [queryParams]="{ menuid: menuItem.id }"
+              [ngClass]="{ 'nav-link': true, 'active': activeMenuId === menuItem.id }"
+              routerLinkActive="active" class="nav-link">
                 <i class="nav-icon {{ menuItem.icon }}"></i>
                 <p>{{ menuItem.label }}</p>
               </a>
@@ -69,7 +72,7 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item" *ngFor="let subMenuItem of menuItem.childmenu">
-                    <a *ngIf="subMenuItem.view === 1" [routerLink]="subMenuItem.route" routerLinkActive="active" class="nav-link">
+                    <a *ngIf="subMenuItem.view === 1" [routerLink]="subMenuItem.route" [queryParams]="{ menuid: subMenuItem.id }" routerLinkActive="active" class="nav-link">
                       <i class="{{ subMenuItem.icon }}"></i>
                       <p>{{ subMenuItem.label }}</p>
                     </a>
