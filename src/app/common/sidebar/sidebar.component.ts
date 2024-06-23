@@ -32,7 +32,7 @@ export class SidebarComponent implements OnInit {
   //   menuItem.showSubmenu = !menuItem.showSubmenu;
   // }
   ngOnInit(): void {
-    const AccountId = localStorage.getItem('id')
+    const AccountId = localStorage.getItem('AccountId')
     console.log(AccountId)
     const value = {
       id:AccountId
