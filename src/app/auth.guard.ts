@@ -15,7 +15,8 @@ export class AuthGuard implements CanActivate {
       // Check additional permissions logic here if needed
       return true;
     } else {
-      this.router.navigate(['/login']); // Redirect to login if not authenticated
+      this.router.navigate(['/unauthorized']);
+      // this.router.navigate(['/login']); // Redirect to login if not authenticated
       return false;
     }
   }
