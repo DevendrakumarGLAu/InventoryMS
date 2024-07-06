@@ -73,6 +73,7 @@ export class AdddetailsComponent implements OnInit {
                 formValues[key] = this.response[key];
               }
             });
+            console.log("formValues", formValues);
             this.addProductForm.patchValue(formValues);
           });
       }
