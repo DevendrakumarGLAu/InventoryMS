@@ -23,6 +23,7 @@ export class AdddetailsComponent implements OnInit {
   category_id: any;
   productOptions: any[] = [];
   categoryOptions: any[] = [];
+  boxOptions: any[] = [];
   selectedCategoryId: any;
   selectedCategory: any;
   flag!: string
@@ -38,76 +39,106 @@ export class AdddetailsComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    const val = {
-      Table_name: "category"
-    }
-    this.addProductService.getData(val).subscribe(response => {
-      this.categories = response.data;
-      this.categoryOptions = this.categories;
-    });
+    this.initializeForm();
+    this.loadCategories();
+    this.loadBoxOptions();
     this.activatedRoute.queryParams.subscribe((params) => {
       this.productId = params['id'];
       this.flag = params['flag']
-      if (this.productId) {
-        this.addProductService.getProductById(this.productId)
-          .subscribe((product: any) => {
-            this.response = product.data[0];
-            console.log("response", this.response)
-            const formValues: any = {};
-            Object.keys(this.response).forEach((key) => {
-              if (key === 'manufacturingDate' || key === 'expiryDate') {
-                const formattedDate = this.datePipe.transform(this.response[key], 'yyyy-MM-dd');
-                formValues[key] = formattedDate;
-              }
-              else if (key === 'category') {
-                this.categoryOptions = [{ id: this.response['category_id'], name: this.response['category'] }];
-                formValues['category'] = this.categoryOptions
-                console.log("category", formValues['category'])
-              } else if (key === 'productName') {
-                formValues['productName'] = this.response['productName'];
-                console.log("productName", formValues['productName'])
-                this.productOptions = [{ product_id: this.response['product_id'], product_name: this.response['productName'] }];
-                formValues['productName'] = this.productOptions
-              }
-              else {
-                formValues[key] = this.response[key];
-              }
-            });
-            console.log("formValues", formValues);
-            this.addProductForm.patchValue(formValues);
+      if(this.productId){
+        
+        const value ={
+          "id":this.productId,
+          "Table_name":"add_product_details"
+        }
+        this.addProductService.getData_common(value).subscribe((data: any) => {
+          console.log("data", data.data[0])
+          const manufacturingTimestamp = data.data[0].manufacturingDate;
+          const expiryTimestamp = data.data[0].expiryDate;
+
+          const manufacturingDate = new Date(parseInt(manufacturingTimestamp));
+          const formattedManufacturingDate = this.datePipe.transform(
+            manufacturingDate,
+            'yyyy-MM-dd'
+          );
+
+          const expiryDate = new Date(parseInt(expiryTimestamp));
+          const formattedExpiryDate = this.datePipe.transform(expiryDate, 'yyyy-MM-dd');
+          this.selectedCategoryId = data.data[0]['category'];
+          console.log("selectedCategoryId", this.selectedCategoryId)
+          this.getProduct_name()
+          this.addProductForm.patchValue({
+            category: data.data[0].category,
+            productName: data.data[0].productName,
+            boxes: data.data[0].boxes,
+            packing: data.data[0].packing,
+            tablets: data.data[0].tablets,
+            price: data.data[0].price,
+            manufacturingDate: formattedManufacturingDate,
+            expiryDate: formattedExpiryDate,
+            description: data.data[0].description,
           });
+        })
       }
     });
-    await this.addProductService.GetProductform().subscribe((data) => {
-      this.formFields = data;
-      this.generateForm();
+  }
+  initializeForm(){
+    this.addProductForm = this.fb.group({
+      category: ['', Validators.required],
+      productName: ['', Validators.required],
+      boxes: ['', Validators.required],
+      packing: ['', Validators.required],
+      tablets: ['', Validators.required],
+      price: ['', Validators.required],
+      manufacturingDate: ['', Validators.required],
+      expiryDate: ['', Validators.required],
+      description: ['']
     });
   }
-  async onCategorySelect(event: any) {
-    this.selectedCategoryId = event.target.value;
-    this.selectedCategory = await this.categoryOptions.find(option => option.id === parseInt(this.selectedCategoryId));
-    await this.getProduct_name();
+  loadCategories(): void {
+    const value ={
+       Table_name: "category"
+       }
+    this.addProductService.getData(value).subscribe(response => {
+      this.categories = response.data;
+      this.categoryOptions = this.categories;
+    });
   }
-  async getProduct_name() {
+  loadBoxOptions(): void {
+    const value ={
+      Table_name: "box_size"
+      }
+   this.addProductService.getData(value).subscribe(response => {
+     this.boxOptions = response.data;
+   });
+  }
+  
+  
+   onCategorySelect(event: any) {
+    this.selectedCategoryId = event.target.value;
+    this.selectedCategory = this.categoryOptions.find(option => option.id === parseInt(this.selectedCategoryId));
+     this.getProduct_name();
+  }
+   getProduct_name() {
     const val = {
       category_id: this.selectedCategoryId
     }
-    await this.addProductService.get_products_by_category(val).subscribe(res => {
+     this.addProductService.get_products_by_category(val).subscribe(res => {
       this.productOptions = res.data;
-      let message = res.message;
-      if (res.status === 'success') {
-        this.snackBar.openSnackBarSuccess([message]);
-      } else {
-        this.snackBar.openSnackBarError([message])
-      }
     })
+  }
+  onProductSelect(event: any) {
+    // console.log(event.target.value)
+  }
+  onPackingSelect(event: any) {
+    // console.log(event.target.value)
   }
   opencategoryDialogue(): void {
     const dialogRef = this.dialog.open(AddCategoryDialogueComponent, {
       width: '300px',
     });
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
+      // console.log(result);
     });
   }
 
@@ -117,59 +148,35 @@ export class AdddetailsComponent implements OnInit {
       height: '500px',
     });
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
+      // console.log(result);
     });
-  }
-  generateForm(): void {
-    const formGroupConfig: any = {};
-    this.formFields.forEach((field: any) => {
-      const validationsArray: any = [];
-      field.validations.forEach((valid: any) => {
-        if (valid.name === 'required') {
-          validationsArray.push(Validators.required);
-          this.isRequired = true;
-        }
-      });
-      if (field.type === 'select') {
-        if (field.name === 'productName' && this.response.productName) {
-          formGroupConfig[field.name] = [this.response.product_id, validationsArray];
-        } else {
-          formGroupConfig[field.name] = ['', validationsArray];
-        }
-      } else {
-        formGroupConfig[field.name] = ['', validationsArray];
-      }
-      field.isRequired = this.isRequired;
-    });
-    this.addProductForm = this.fb.group(formGroupConfig);
   }
   onSubmit(): void {
-    if (this.addProductForm.valid) {
-      let value = this.addProductForm.value;
-      const selectedCategory = this.categoryOptions.find(option => option.id === parseInt(value.category));
-      const categoryName = selectedCategory ? selectedCategory.name : '';
-      value.category = categoryName;
-      const selectedProduct = this.productOptions.find(option => option.product_id === parseInt(value.productName));
-      const productName = selectedProduct ? selectedProduct.product_name : '';
-      value.productName = productName;
-      value.category_id = selectedCategory ? selectedCategory.id : null;
-      value.product_id = selectedProduct ? selectedProduct.product_id : null;
-      if (this.productId > 0) {
-        value.id = this.productId;
-      }
-      this.addProductService.addProduct(value).subscribe((response: any) => {
-        console.log(response);
-        let message = response.message;
-        if (response.status === 'success') {
-          this.snackBar.openSnackBarSuccess([message]);
-          this.router.navigate(['/admin/addproduct']);
-        } else {
-          this.snackBar.openSnackBarError([message]);
-        }
-      });
-    } else {
-      this.addProductForm.markAllAsTouched();
+    // console.log("form", this.addProductForm.value);
+    if(this.addProductForm.invalid){
+      return
     }
+    let quantity = this.addProductForm.value.boxes * this.addProductForm.value.packing * this.addProductForm.value.tablets;
+    this.addProductForm.value.quantity = quantity;
+    const value={
+      "table_name": "add_product_details",
+      "action": "insert",
+      "id": 0,
+      "column_data": this.addProductForm.value
+    }
+    if(this.productId){
+      value.action = "update";
+      value.id = this.productId;
+    }
+    this.addProductService.addData_db_operations(value).subscribe((response: any) => {
+      let message = response.message;
+      if (response.status === 'success') {
+        this.snackBar.openSnackBarSuccess([message]);
+        this.router.navigate(['/admin/addproduct']);
+      } else {
+        this.snackBar.openSnackBarError([message]);
+      }
+    })
   }
   resetform() {
     this.addProductForm.reset(this.addProductForm.value);

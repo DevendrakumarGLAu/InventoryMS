@@ -21,7 +21,7 @@
 <div class="container">
   <div class="card">
     <div class="card-body">
-      <form [formGroup]="addProductForm" (ngSubmit)="onSubmit()">
+      <!-- <form [formGroup]="addProductForm" (ngSubmit)="onSubmit()">
         <div class="form-row">
           <div class="form-group col-md-6" *ngFor="let field of formFields">
             <label>{{ field.label }} <span class="text-danger">{{ field.isRequired ? '*' : '' }}</span></label>
@@ -58,76 +58,78 @@
         </div>
         <button type="submit" class="btn btn-primary float-right">{{flag === 'edit' ? 'Update Product' : 'Add Product'}}</button>
         <button type="reset" class="btn btn-light float-right mr-2" (click)="resetform()">Reset</button>
-      </form>
-      <!-- <form [formGroup]="addProductForm" (ngSubmit)="onSubmit()">
+      </form> -->
+      <form [formGroup]="addProductForm" (ngSubmit)="onSubmit()">
         <div class="form-row">
-          <div class="form-group col-md-6">
-            <label>Category Name <span class="text-danger">*</span></label>
-            <input class="form-control" type="text" formControlName="productName" placeholder="Enter product name">
-            <div *ngIf="addProductForm.get('productName')?.errors && addProductForm.get('productName')?.touched" class="text-danger">
-              <div *ngIf="addProductForm.get('productName')?.hasError('required')">
-                Product Name is required
-              </div>
-            </div>
-          </div>
-          <div class="form-group col-md-6">
-            <label>Product Name <span class="text-danger">*</span></label>
-            <input class="form-control" type="text" formControlName="productName" placeholder="Enter product name">
-            <div *ngIf="addProductForm.get('productName')?.errors && addProductForm.get('productName')?.touched" class="text-danger">
-              <div *ngIf="addProductForm.get('productName')?.hasError('required')">
-                Product Name is required
-              </div>
-            </div>
-          </div>
-      
-          <div class="form-group col-md-6">
-            <label>Product Code <span class="text-danger">*</span></label>
-            <input class="form-control" type="text" formControlName="productCode" placeholder="Enter product code">
-            <div *ngIf="addProductForm.get('productCode')?.errors && addProductForm.get('productCode')?.touched" class="text-danger">
-              <div *ngIf="addProductForm.get('productCode')?.hasError('required')">
-                Product Code is required
-              </div>
-            </div>
-          </div>
-      
           <div class="form-group col-md-6">
             <label>Category <span class="text-danger">*</span></label>
             <select class="form-control" formControlName="category" (change)="onCategorySelect($event)">
-              <option value="" disabled>Select category</option>
+              <option value="" disabled selected>Please Select category</option>
               <option *ngFor="let category of categoryOptions" [value]="category.id">{{ category.name }}</option>
             </select>
-            <div *ngIf="addProductForm.get('category')?.errors && addProductForm.get('category')?.touched" class="text-danger">
+            <!-- <div *ngIf="addProductForm.get('category')?.errors && addProductForm.get('category')?.touched" class="text-danger">
               <div *ngIf="addProductForm.get('category')?.hasError('required')">
                 Category is required
               </div>
-            </div>
+            </div> -->
           </div>
-      
           <div class="form-group col-md-6">
-            <label>Price <span class="text-danger">*</span></label>
-            <input class="form-control" type="number" formControlName="price" placeholder="Enter price">
-            <div *ngIf="addProductForm.get('price')?.errors && addProductForm.get('price')?.touched" class="text-danger">
-              <div *ngIf="addProductForm.get('price')?.hasError('required')">
-                Price is required
+            <label>Product Name <span class="text-danger">*</span></label>
+            <select name="productName" id="" class="form-control" type="text" formControlName="productName" (change)="onProductSelect($event)">
+              <option value="" disabled selected>Please Select Product</option>
+              <option *ngFor="let product of productOptions" [value]="product.product_id">{{ product.product_name }}</option>
+            </select>
+            <!-- <div *ngIf="addProductForm.get('productName')?.errors && addProductForm.get('productName')?.touched" class="text-danger">
+              <div *ngIf="addProductForm.get('productName')?.hasError('required')">
+                Product Name is required
               </div>
-            </div>
+            </div> -->
           </div>
-      
           <div class="form-group col-md-6">
-            <label>Manufacturing Date</label>
+            <label class="control-label">No. of boxes <span class="text-danger">*</span></label>
+            <input class="form-control" type="number" formControlName="boxes" placeholder="Enter number of boxes">
+          </div>
+          <div class="form-group col-md-6">
+            <label class="control-label">Packing <span class="text-danger">*</span></label>
+            <select class="form-control" formControlName="packing" (click)="onPackingSelect($event)">
+              <option value="" disabled selected>Please Select Packing</option>
+              <option *ngFor="let box of boxOptions" [value]="box.last_number">{{box.option_value}}</option>
+              <!-- <option value="1">1 X 1</option>
+              <option value="2">1 X 2</option>
+              <option value="3">1 X 3</option>
+              <option value="4">1 X 4</option>
+              <option value="5">1 X 5</option>
+              <option value="6">1 X 6</option>
+              <option value="7">1 X 7</option>
+              <option value="8">1 X 8</option>
+              <option value="9">1 X 9</option>
+              <option value="10">1 X 10</option> -->
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label class="control-label">No. of Tablets <span class="text-danger">*</span></label>
+            <input class="form-control" type="number" formControlName="tablets" placeholder="Enter number of tablets">
+          </div>
+          <div class="form-group col-md-6">
+            <label class="control-label">Cost Price <span class="text-danger">*</span></label>
+            <input class="form-control" type="number" formControlName="price" placeholder="Enter price">
+          </div>
+          <div class="form-group col-md-6">
+            <label>Manufacturing Date <span class="text-danger">*</span></label>
             <input class="form-control" type="date" formControlName="manufacturingDate" placeholder="Select manufacturing date">
           </div>
-      
+          <div class="form-group col-md-6">
+            <label>Expiry Date <span class="text-danger">*</span></label>
+            <input class="form-control" type="date" formControlName="expiryDate" placeholder="Select expiry date">
+          </div>
           <div class="form-group col-md-6">
             <label>Description</label>
             <textarea class="form-control" formControlName="description" placeholder="Enter description"></textarea>
           </div>
         </div>
-      
         <button type="submit" class="btn btn-primary float-right">{{ flag === 'edit' ? 'Update Product' : 'Add Product' }}</button>
         <button type="reset" class="btn btn-light float-right mr-2" (click)="resetform()">Reset</button>
-      </form> -->
-      
+      </form>
     </div>
   </div>
 </div>

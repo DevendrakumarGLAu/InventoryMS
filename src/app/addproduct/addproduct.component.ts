@@ -19,13 +19,11 @@ export class AddproductComponent implements OnInit {
     'Sno',
     'category',
     'productName',
-    'costPrice',
-    // 'sellingPrice',
+    'price',
     'quantity',
-    'CostPerPiece',
     'manufacturingDate',
     'expiryDate',
-    'actions',
+    'actions'
   ];
 
   pageSize = 10;
@@ -46,15 +44,18 @@ export class AddproductComponent implements OnInit {
     this.loaddata();
   }
   loaddata() {
-    this.AddProductService.getProductData().subscribe((data: any) => {
+    const val ={
+      "Table_name":"add_product_details"
+    }
+    
+    this.AddProductService.getData_common(val).subscribe((data: any) => {
       // this.productdata = data['data'][0];
       this.productdata = data.data;
-      // console.log("this product",this.productdata);
+      console.log("this product",this.productdata);
       this.hasData = this.productdata.length > 0;
-      // this.productdata = this.productdata.data;
-      this.dataSource = new MatTableDataSource(this.productdata);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+        this.dataSource = new MatTableDataSource(this.productdata);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
     });
   }
 
