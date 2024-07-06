@@ -46,6 +46,8 @@ export class AddComponent implements OnInit {
         }
         this.AddProductService.getData_common(val).subscribe(response=>{
           const vendorData = response.data[0];
+          this.selectedCategoryId = vendorData.category_id
+          this.getProduct_name();
           this.vendorForm.patchValue({
             vendorName: vendorData.vendorName,
           category_id: vendorData.category_id,
@@ -54,9 +56,9 @@ export class AddComponent implements OnInit {
           email: vendorData.email,
           mobile: vendorData.mobile
           });
-          this.category_id1= vendorData.category_id,
+          // this.category_id1= vendorData.category_id,
           // console.log(this.category_id1)
-          this.getProduct_name();
+          // this.getProduct_name();
         })
       }
     })
@@ -71,36 +73,36 @@ export class AddComponent implements OnInit {
       // console.log("category options", this.categoryOptions)
     });
   }
-  async onCategorySelect(event: any) {
+   onCategorySelect(event: any) {
     this.selectedCategoryId = event.target.value;
-    this.selectedCategory = await this.categoryOptions.find(option => option.id === parseInt(this.selectedCategoryId));
+    this.selectedCategory =  this.categoryOptions.find(option => option.id === parseInt(this.selectedCategoryId));
     // console.log("Selected category:", this.selectedCategory);
-    await this.getProduct_name();
+     this.getProduct_name();
   }
-  async getProduct_name() {
+   getProduct_name() {
     const val = {
       category_id: this.selectedCategoryId
     }
-    if(this.vendorId){
-      val['category_id']=this.category_id1
-    }
-    await this.AddProductService.get_products_by_category(val).subscribe(res => {
+    // if(this.vendorId){
+    //   val['category_id']=this.category_id1
+    // }
+     this.AddProductService.get_products_by_category(val).subscribe(res => {
       this.productOptions = res.data;
       // console.log("product option", this.productOptions)
-      if(this.vendorId){
-        const selectedProduct = this.productOptions.find(product => product.product_id === this.vendorForm.value.product_id);
-        if(selectedProduct) {
-          this.vendorForm.patchValue({
-            product_id: selectedProduct.product_id
-          })
-        }
-      }
-      let message = res.message;
-      if (res.status === 'success') {
-        this.SnackBarService.openSnackBarSuccess([message]);
-      } else {
-        this.SnackBarService.openSnackBarError([message])
-      }
+      // if(this.vendorId){
+      //   const selectedProduct = this.productOptions.find(product => product.product_id === this.vendorForm.value.product_id);
+      //   if(selectedProduct) {
+      //     this.vendorForm.patchValue({
+      //       product_id: selectedProduct.product_id
+      //     })
+      //   }
+      // }
+      // let message = res.message;
+      // if (res.status === 'success') {
+      //   this.SnackBarService.openSnackBarSuccess([message]);
+      // } else {
+      //   this.SnackBarService.openSnackBarError([message])
+      // }
     })
   }
 

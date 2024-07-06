@@ -13,15 +13,16 @@ export class AddComponent implements OnInit {
   categories: any[] = [];
   category_id: any;
   selectedProductId: any;
-  productId:any;
-  BillId:any;
-  flag!:string;
+  productId: any;
+  productOptions:any[] = [];
+  BillId: any;
+  flag!: string;
 
 
   constructor(private fb: FormBuilder, private addProductService: AddProductService,
-    private SnackBarService:SnackBarService,
-    private activatedRoute:ActivatedRoute,
-    private router:Router) { }
+    private SnackBarService: SnackBarService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.orderForm = this.fb.group({
@@ -34,12 +35,12 @@ export class AddComponent implements OnInit {
     this.getCategories();
     this.getBillData()
   }
-  
+
 
   get orders(): FormArray {
     return this.orderForm.get('orders') as FormArray;
   }
-  getBillData(){
+  getBillData() {
     this.activatedRoute.queryParams.subscribe((params: any) => {
       this.BillId = params['id'];
       this.flag = params['flag'];
@@ -50,7 +51,7 @@ export class AddComponent implements OnInit {
         id: this.BillId
       }
       this.addProductService.getData_common(val).subscribe((data: any) => {
-        console.log(data.data)
+        // console.log(data.data)
         const billData = data.data[0];
         this.orderForm.patchValue({
           name: billData.name,
@@ -61,26 +62,31 @@ export class AddComponent implements OnInit {
         }
         if (billData.orders && Array.isArray(billData.orders)) {
           this.orders.clear();
-          billData.orders.forEach((order:any) =>{
+          billData.orders.forEach((order:any,index: number) =>{
             const newOrderGroup = this.createOrder(order.sno);
+            this.category_id = order.category_id
+            // console.log("cat",this.category_id)
             newOrderGroup.patchValue({
               category_id: order.category_id,
               product_id: order.product_id,
-              quantity: order.quantity
+              quantity: order.quantity,
+              selling_price: order.selling_price
             });
             this.orders.push(newOrderGroup);
+            this.onCategorySelect({ target: { value: order.category_id } }, index);
           })
         }
       })
     }
   }
-
+  
   createOrder(serialNumber: number): FormGroup {
     return this.fb.group({
       sno: [serialNumber],
       category_id: ['', Validators.required],
       product_id: ['', Validators.required],
       quantity: ['', [Validators.required, Validators.min(1)]],
+      selling_price: ['', Validators.required],
       category_name: [''],
       product_name: [''],
       products: [[]]
@@ -110,7 +116,7 @@ export class AddComponent implements OnInit {
     this.addProductService.getData(val).subscribe(
       (response: any) => {
         this.categories = response.data;
-        console.log("category", this.categories);
+        // console.log("category", this.categories);
       },
       (error: any) => {
         console.error('Error fetching categories:', error);
@@ -121,28 +127,26 @@ export class AddComponent implements OnInit {
   onCategorySelect(event: any, index: number) {
     const orderGroup = this.orders.at(index) as FormGroup;
     this.category_id = event.target.value;
-    console.log('Selected category:', this.category_id);
-    
+    // console.log('Selected category:', this.category_id);
     const val = {
       category_id: this.category_id
     };
     this.addProductService.get_products_by_category(val).subscribe(data => {
-      console.log(data.data);
+      // console.log(data.data);
+      this.productOptions = data.data;
       orderGroup.get('products')?.setValue(data.data);
-      orderGroup.get('product_id')?.setValue('');
-      orderGroup.get('product_id')?.setErrors(null);
     });
   }
 
   onProductSelect(event: any, index: number) {
     const orderGroup = this.orders.at(index) as FormGroup;
     this.selectedProductId = event.target.value;
-    console.log('Selected product ID:', this.selectedProductId);
+    // console.log('Selected product ID:', this.selectedProductId);
 
     // Check for duplicate product selection
     const selectedProductIds = this.orders.controls.map((control: AbstractControl) => control.get('product_id')?.value);
     const duplicateIndex = selectedProductIds.findIndex((productId: any, i: number) => i !== index && productId === this.selectedProductId);
-    
+
     if (duplicateIndex !== -1) {
       orderGroup.get('product_id')?.setErrors({ duplicateProduct: true });
     } else {
@@ -169,45 +173,54 @@ export class AddComponent implements OnInit {
         };
       });
 
-      const payload = {
-        name: formValue.name,
-        mobile: formValue.mobile,
-        orders: ordersWithNames
-      };
-      console.log("Payload:", payload);
+      // const payload = {
+      //   name: formValue.name,
+      //   mobile: formValue.mobile,
+      //   orders: ordersWithNames
+      // };
+      // console.log("Payload:", payload);
       const val = {
         table_name: 'customer_orders_bill',
         action: 'insert',
         id: 0,
         column_data: this.orderForm.value
       }
-      console.log(val)
-      if(this.productId){
-        val['id'] = this.productId
+      // console.log("product id",this.BillId)
+      if (this.BillId) {
+        val['id'] = this.BillId
         val['action'] = 'update'
       }
-      this.addProductService.addData_db_operations(val).subscribe(response =>{
+      // console.log(val)
+      // return
+      this.addProductService.addData_db_operations(val).subscribe(response => {
         let message = response.message
-            if (response.status === 'success') {
-                this.SnackBarService.openSnackBarSuccess([message])
-                this.router.navigate(['/admin/printbill']);
-            } else {
-                this.SnackBarService.openSnackBarError([message])
-            }
+        if (response.status === 'success') {
+          this.SnackBarService.openSnackBarSuccess([message])
+          this.router.navigate(['/admin/printbill']);
+        } else {
+          this.SnackBarService.openSnackBarError([message])
+        }
       })
-      
       return
-      this.addProductService.save_bill(payload).subscribe(response =>{
-        let message = response.message
-            if (response.status === 'success') {
-                this.SnackBarService.openSnackBarSuccess([message])
-                this.router.navigate(['/admin/printbill']);
-            } else {
-                this.SnackBarService.openSnackBarError([message])
-            }
-      })
+      
     } else {
       this.orderForm.markAllAsTouched();
     }
+  }
+  printBill(){
+    const payload = {
+      table_name: 'customer_orders_bill',
+      column_data: this.orderForm.value
+    }
+    console.log("payload",payload)
+    this.addProductService.save_bill(payload).subscribe(response => {
+      let message = response.message
+      if (response.status === 'success') {
+        this.SnackBarService.openSnackBarSuccess([message])
+        this.router.navigate(['/admin/printbill']);
+      } else {
+        this.SnackBarService.openSnackBarError([message])
+      }
+    })
   }
 }

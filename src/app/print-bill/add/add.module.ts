@@ -3,9 +3,10 @@ import { NgModule } from "@angular/core";
 import { addBillRouting } from "./add.routing.module";
 import { ReactiveFormsModule } from "@angular/forms";
 import { AddComponent } from "./add.component";
+import { MaterialModule } from "src/app/material.module";
 
 @NgModule({
-    imports:[CommonModule,addBillRouting,ReactiveFormsModule],
+    imports:[CommonModule,addBillRouting,ReactiveFormsModule,MaterialModule],
     exports:[],
     declarations:[AddComponent]
 })

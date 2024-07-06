@@ -26,61 +26,87 @@
                         <div class="col">
                             <label for="name" class="form-label">Name</label>
                             <input type="text" class="form-control" id="name" formControlName="name" placeholder="Name">
-                            <div *ngIf="orderForm.get('name')?.invalid && orderForm.get('name')?.touched" class="text-danger">
+                            <div *ngIf="orderForm.get('name')?.invalid && orderForm.get('name')?.touched"
+                                class="text-danger">
                                 Name is required.
                             </div>
                         </div>
                         <div class="col">
                             <label for="mobile" class="form-label">Mobile Number</label>
-                            <input type="text" class="form-control" id="mobile" formControlName="mobile" placeholder="Mobile Number">
-                            <div *ngIf="orderForm.get('mobile')?.invalid && orderForm.get('mobile')?.touched" class="text-danger">
+                            <input type="text" class="form-control" id="mobile" formControlName="mobile"
+                                placeholder="Mobile Number">
+                            <div *ngIf="orderForm.get('mobile')?.invalid && orderForm.get('mobile')?.touched"
+                                class="text-danger">
                                 Mobile number is required.
                             </div>
                         </div>
                     </div>
                     <div formArrayName="orders">
-                      <div *ngFor="let order of orders.controls; let i = index" [formGroupName]="i" class="row mb-3">
-                        <div class="col-lg-1">
-                            <label class="form-label">S.no</label>
-                            <input type="text" class="form-control" [value]="i + 1" disabled>
-                        </div>
-                        <div class="col">
-                            <label for="category" class="form-label">Category</label>
-                            <select formControlName="category_id" class="form-control" (change)="onCategorySelect($event, i)">
-                                <option value="" disabled selected>Select Category</option>
-                                <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
-                              </select>
-                            <div *ngIf="orders.controls[i].get('category_id')?.invalid && orders.controls[i].get('category')?.touched" class="text-danger">
-                                Category is required.
+                        <div *ngFor="let order of orders.controls; let i = index" [formGroupName]="i" class="row mb-3">
+                            <div class="col-lg-1">
+                                <label class="form-label">S.no</label>
+                                <input type="text" class="form-control" [value]="i + 1" disabled>
                             </div>
-                        </div>
-                        <div class="col">
-                            <label for="product" class="form-label">Product</label>
-                            <select formControlName="product_id" class="form-control" id="product_id" (change)="onProductSelect($event, i)">
-                                <option value="" disabled selected>Select Product</option>
-                                <option *ngFor="let product of order.get('products')?.value" [value]="product.product_id">{{ product.product_name }}</option>
-                            </select>
-                            <div *ngIf="orders.controls[i].get('product_id')?.invalid && orders.controls[i].get('product_id')?.touched" class="text-danger">
-                                <div *ngIf="orders.controls[i].get('product_id')?.errors?.['duplicateProduct']">Duplicate product selection.</div>
-                                <div *ngIf="!orders.controls[i].get('product_id')?.errors?.['duplicateProduct']">Product is required.</div>
+                            <div class="col">
+                                <label for="category" class="form-label">Category <strong class="text-danger">*</strong></label>
+                                <select formControlName="category_id" class="form-control"
+                                    (change)="onCategorySelect($event, i)">
+                                    <option value="" disabled selected>Select Category</option>
+                                    <option *ngFor="let category of categories" [value]="category.id">{{ category.name
+                                        }}</option>
+                                </select>
+                                <div *ngIf="orders.controls[i].get('category_id')?.invalid && orders.controls[i].get('category')?.touched"
+                                    class="text-danger">
+                                    Category is required.
+                                </div>
                             </div>
-                        </div>
-                        
-                        
-                        <div class="col">
-                            <label for="quantity" class="form-label">Quantity</label>
-                            <input formControlName="quantity" type="number" class="form-control" id="quantity" placeholder="Quantity">
-                            <div *ngIf="orders.controls[i].get('quantity')?.invalid && orders.controls[i].get('quantity')?.touched" class="text-danger">
-                                Quantity is required and should be at least 1.
+                            <div class="col">
+                                <label for="product" class="form-label">Product <strong class="text-danger">*</strong></label>
+                                <select formControlName="product_id" class="form-control" id="product_id"
+                                    (change)="onProductSelect($event, i)">
+                                    <option value="" disabled selected>Select Product </option>
+                                    <option *ngFor="let product of order.get('products')?.value"
+                                        [value]="product.product_id">{{ product.product_name }}</option>
+                                </select>
+                                <div *ngIf="orders.controls[i].get('product_id')?.invalid && orders.controls[i].get('product_id')?.touched"
+                                    class="text-danger">
+                                    <div *ngIf="orders.controls[i].get('product_id')?.errors?.['duplicateProduct']">
+                                        Duplicate product selection.</div>
+                                    <div *ngIf="!orders.controls[i].get('product_id')?.errors?.['duplicateProduct']">
+                                        Product is required.</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col">
-                            <button type="button" (click)="removeOrder(i)" class="btn btn-danger mt-4">Remove</button>
+
+
+                            <div class="col">
+                                <label for="quantity" class="form-label">Quantity <strong class="text-danger">*</strong> </label>
+                                <input formControlName="quantity" type="number" class="form-control" id="quantity"
+                                    placeholder="Quantity">
+                                <div *ngIf="orders.controls[i].get('quantity')?.invalid && orders.controls[i].get('quantity')?.touched"
+                                    class="text-danger">
+                                    Quantity is required and should be at least 1.
+                                </div>
+                            </div>
+                            <div class="col">
+                                <label for="price" class="form-label">Selling Price <strong class="text-danger">*</strong></label>
+                                <input type="number" class="form-control" id="price" formControlName="selling_price"
+                                    placeholder="Selling Price">
+                                <div *ngIf="orders.controls[i].get('price')?.invalid && orders.controls[i].get('price')?.touched"
+                                    class="text-danger">
+                                    Price is required.
+                                </div>
+                            </div>
+                            <div class="col">
+                                <button type="button" (click)="removeOrder(i)"
+                                    class="btn btn-danger mt-4 mr-2"><mat-icon>delete</mat-icon> </button>
+                                <button type="button" (click)="addOrder()" class="btn btn-primary mt-4"><mat-icon>add</mat-icon></button>
+                            </div>
                         </div>
                     </div>
+                    <div class="col-md-12 text-right">
+                        <button type="button" class="btn btn-primary float-right" (click)="printBill()" >Print Bill</button>
+                        <button type="submit" class="btn btn-success float-right mr-2">Save</button>
                     </div>
-                    <button type="button" (click)="addOrder()" class="btn btn-primary">Add Order</button>
-                    <button type="submit" class="btn btn-success">Submit</button>
                 </form>
             </div>
         </div>

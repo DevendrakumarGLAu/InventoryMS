@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./vendors.component.css']
 })
 export class VendorsComponent implements OnInit {
-  displayedColumns: string[] = ['Sno', 'vendorName', 'productName', 'companyName', 'email', 'mobile', 'actions'];
+  displayedColumns: string[] = ['Sno', 'vendorName',  'companyName', 'email', 'mobile', 'actions'];
   dataSource = new MatTableDataSource<any>([]);
   pageSize: number = 10;
   pageSizeOptions: number[] = [5, 10, 25, 100];
@@ -20,7 +20,7 @@ export class VendorsComponent implements OnInit {
   hasData: boolean = false;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-
+  product_id: any;
   constructor(private AddProductService:AddProductService,
     private snackBar:SnackBarService,
     private router:Router,
@@ -36,8 +36,17 @@ export class VendorsComponent implements OnInit {
       Table_name:'vendors'
     }
     this.AddProductService.getData(payload).subscribe(data =>{
-      // console.log("data", data.data);
-      // this.dataSource = data.data;
+      console.log("data", data.data);
+      data.data.forEach((vendor:any) => {
+        const prodPayload = {
+          id: vendor.product_id,
+          Table_name: 'productname'
+        };
+        this.AddProductService.getData_common(prodPayload).subscribe(data => {
+          console.log("Product Name:", data.data);
+        });
+      });
+      
       this.hasData = data.data.length > 0;
       this.dataSource = new MatTableDataSource(data.data);
       this.dataSource.paginator = this.paginator;
