@@ -7,6 +7,7 @@ import { FooterComponent } from "../common/footer/footer.component";
 import { SidebarComponent } from "../common/sidebar/sidebar.component";
 // import { LoaderComponent } from "../common/loader/loader.component";
 
+
 @NgModule({
     imports: [FrontendRoutingModule, CommonModule],
     exports: [],

@@ -45,7 +45,8 @@ export class AddproductComponent implements OnInit {
   }
   loaddata() {
     const val ={
-      "Table_name":"add_product_details"
+      Table_name:"add_product_details apd LEFT JOIN category c ON apd.category = c.id LEFT JOIN productname p ON apd.productName = p.id ORDER BY apd.id desc",
+      column_string:"apd.id, apd.quantity, apd.price, apd.manufacturingDate, apd.expiryDate, c.name AS category, p.name AS productName",
     }
     
     this.AddProductService.getData_common(val).subscribe((data: any) => {
@@ -66,7 +67,7 @@ export class AddproductComponent implements OnInit {
   }
   dataProcessingDeletes(id: number) {
     return {
-      table_name: 'products',
+      table_name: 'add_product_details',
       row_ids: id,
       action: 'delete',
     };

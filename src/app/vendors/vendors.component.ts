@@ -66,7 +66,12 @@ export class VendorsComponent implements OnInit {
     };
   }
   delete(id: number) {
-    const payload = this.dataProcessingDeletes(id);
+    const payload = {
+      table_name: 'vendors',
+      row_ids: id,
+      action: 'delete',
+    }
+    // const payload = this.dataProcessingDeletes(id);
     // console.log(payload);
     this.AddProductService.deleteProduct(payload).subscribe(
       (response) => {

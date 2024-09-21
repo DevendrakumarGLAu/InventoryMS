@@ -38,7 +38,6 @@ body {
     z-index: 1000;
 }
 
-/* .ring-container { position: relative; z-index: 1000; position: fixed; top: 40%; left: 50%; z-index: 1000; } */
 .ring {
     width: 100px;
     height: 100px;
@@ -108,4 +107,20 @@ body {
     100% {
         transform: rotatex(35deg) rotatey(55deg) rotatez(360deg);
     }
+}
+
+/* Spinner container */
+.spinner {
+  width: 70px; /* Size of the spinner */
+  height: 70px; /* Size of the spinner */
+  border: 12px solid #f3f3f3; /* Light grey border color */
+  border-top: 12px solid #3498db; /* Blue color for the spinning part */
+  border-radius: 50%; /* Makes the spinner circular */
+  animation: spin 1s linear infinite; /* Spinning animation */
+}
+
+/* Keyframes for spinning animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

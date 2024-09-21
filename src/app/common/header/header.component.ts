@@ -10,7 +10,8 @@ export class HeaderComponent {
   constructor(private router: Router, private AuthService:AuthService) {}
 
   logout() {
-    this.AuthService.logout()
+    
     this.router.navigate(['/login']);
+    this.AuthService.logout()
   }
 }

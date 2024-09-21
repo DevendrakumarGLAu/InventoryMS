@@ -57,7 +57,25 @@ export class PrintBillComponent implements OnInit {
     }
   }
 
-  delete(id: any) {
-    // Implement your delete logic here
+  delete(id: number) {
+    const payload = {
+      table_name: 'customer_orders_bill',
+      row_ids: id,
+      action: 'delete',
+    }
+    this.AddProductService.deleteProduct(payload).subscribe(
+      (response) => {
+        if (response.status === 'success') {
+          let message = response.message;
+          this.snackBar.openSnackBarSuccess([message]);
+          this.loadData();
+        } else {
+          this.snackBar.openSnackBarError([response.message]);
+        }
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
   }
 }

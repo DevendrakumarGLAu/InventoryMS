@@ -12,7 +12,12 @@ import { FormsModule } from "@angular/forms";
     imports: [
       MatPaginatorModule,
       MatInputModule,
-      // Add other Material modules you want to use
+      MatTableModule,      // Make sure this is included
+      MatIconModule,
+      MatFormFieldModule,
+      MatCheckboxModule,
+      MatExpansionModule,
+      FormsModule
     ],
     exports: [
       MatPaginatorModule,

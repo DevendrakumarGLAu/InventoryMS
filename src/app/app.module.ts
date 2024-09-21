@@ -3,9 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './common/header/header.component';
-import { SidebarComponent } from './common/sidebar/sidebar.component';
-import { FooterComponent } from './common/footer/footer.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -19,6 +16,7 @@ import { BackButtonDirective } from './directives/back-button.directive';
 import { LoaderComponent } from './common/loader/loader.component';
 import { AuthInterceptor } from './auth.interceptor';
 import { LoaderService } from './services/loader.service';
+
 @NgModule({
   declarations: [
     AppComponent,
