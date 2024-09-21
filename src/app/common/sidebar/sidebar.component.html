@@ -54,15 +54,13 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
           <ng-container *ngFor="let menuItem of sidebaritems">
-            <li class="nav-item" *ngIf="menuItem.view === 1">
-              
+            <li class="nav-item" *ngIf="menuItem.view === 1"
+                [ngClass]="{ 'menu-is-opening': isSubmenuOpen(menuItem), 'menu-open': isSubmenuOpen(menuItem) }">
+      
               <ng-container *ngIf="!menuItem.childmenu || menuItem.childmenu.length === 0">
-                <a
-                  [routerLink]="menuItem.route"
-                  [queryParams]="{ menuid: menuItem.id }"
-                  [ngClass]="{ 'nav-link': true, 'active': activeMenuId === menuItem.id }"
-                  routerLinkActive="active"
-                  class="nav-link">
+                <a [routerLink]="menuItem.route" [queryParams]="{ menuid: menuItem.id }"
+                   [ngClass]="{ 'nav-link': true, 'active': activeMenuId === menuItem.id }"
+                   routerLinkActive="active" class="nav-link">
                   <i class="nav-icon {{ menuItem.icon }}"></i>
                   <p>{{ menuItem.label }}</p>
                 </a>
@@ -73,20 +71,20 @@
                   <i class="nav-icon {{ menuItem.icon }}"></i>
                   <p>
                     {{ menuItem.label }}
-                    <i class="right fas" [ngClass]="isSubmenuOpen(menuItem) ? 'fa-angle-down' : 'fa-angle-left'"></i>
+                    <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
-                <ul class="nav nav-treeview"[ngStyle]="{ display: isSubmenuOpen(menuItem) ? 'block' : 'none' }">
-                  <li class="nav-item" *ngFor="let subMenuItem of menuItem.childmenu">
-                    <a 
-                      [routerLink]="subMenuItem.route"
-                      [queryParams]="{ menuid: subMenuItem.id }"
-                      routerLinkActive="active"
-                      class="nav-link">
-                      <i class="{{ subMenuItem.icon }}"></i>
-                      <p>{{ subMenuItem.label }}</p>
-                    </a>
-                  </li>
+                <ul class="nav nav-treeview" >
+                  <!-- [ngStyle]="{ display: isSubmenuOpen(menuItem) ? 'block' : 'none' }" -->
+                  <ng-container *ngFor="let subMenuItem of menuItem.childmenu">
+                    <li class="nav-item" *ngIf="subMenuItem.view === 1">
+                      <a [routerLink]="subMenuItem.route" [queryParams]="{ menuid: subMenuItem.id }"
+                         routerLinkActive="active" class="nav-link">
+                        <i class="{{ subMenuItem.icon }}"></i>
+                        <p>{{ subMenuItem.label }}</p>
+                      </a>
+                    </li>
+                  </ng-container>
                 </ul>
               </ng-container>
       
@@ -94,8 +92,6 @@
           </ng-container>
         </ul>
       </nav>
-      
-      
       
 
       <!-- /.sidebar-menu -->

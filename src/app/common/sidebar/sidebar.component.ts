@@ -26,9 +26,22 @@ export class SidebarComponent implements OnInit {
         const data = await this.AddProductService.sidebarConfig(value).toPromise();
         this.sidebaritems = data;
 
+        const storedOpenSubmenuId = localStorage.getItem('openSubmenuId');
+        const storedActiveMenuId = localStorage.getItem('activeMenuId');
+
+        if (storedOpenSubmenuId) {
+          this.openSubmenuId$.next(Number(storedOpenSubmenuId));
+        }
+        if (storedActiveMenuId) {
+          this.activeMenuId = Number(storedActiveMenuId);
+        }
+
         // Set active menu on route change
         this.router.events.subscribe(() => {
-          this.activeMenuId = this.sidebaritems.find((item:any) => this.router.isActive(item.route, true))?.id || null;
+          const currentMenuId = this.sidebaritems.find((item: any) => this.router.isActive(item.route, true))?.id || null;
+          if (currentMenuId !== this.activeMenuId) {
+            this.setActiveSubMenu(this.sidebaritems.find((item:any) => item.id === currentMenuId));
+          }
         });
       } catch (error) {
         console.error('Error fetching sidebar data:', error);
@@ -37,7 +50,16 @@ export class SidebarComponent implements OnInit {
   }
 
   setActiveSubMenu(menuItem: any): void {
-    this.openSubmenuId$.next(this.openSubmenuId$.value === menuItem.id ? null : menuItem.id);
+    // Close any open submenu if a different menu item is clicked
+    if (this.openSubmenuId$.value !== menuItem.id) {
+      this.openSubmenuId$.next(menuItem.id);
+      localStorage.setItem('openSubmenuId', menuItem.id.toString());
+    } else {
+      this.openSubmenuId$.next(null);
+      localStorage.removeItem('openSubmenuId');
+    }
+    localStorage.setItem('activeMenuId', menuItem.id.toString());
+    this.activeMenuId = menuItem.id; // Update active menu
   }
 
   isSubmenuOpen(menuItem: any): boolean {
