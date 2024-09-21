@@ -81,31 +81,31 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path:'user-details',
+        path:'settings/userdetails',
         loadChildren:()=>
         import('../user-details/user-details.module').then((m) =>m.userDetailsModule),
         canActivate: [AuthGuard],
       },
       {
-        path:'user-details/add',
+        path:'settings/userdetails/add',
         loadChildren:()=>
         import('../user-details/add/add.module').then((m) =>m.addUserModule),
         canActivate: [AuthGuard],
       },
       {
-        path:'roles',
+        path:'settings/roles',
         loadChildren:()=>
         import('../roles/role.module').then((m) =>m.RoleModule),
         canActivate: [AuthGuard],
       },
       {
-        path:'roles/addRole',
+        path:'settings/roles/addRole',
         loadChildren:()=>
         import('../roles/add/addRole.module').then((m) =>m.addRoleModule),
         canActivate: [AuthGuard],
       },
       {
-        path:'permission',
+        path:'settings/permission',
         loadChildren:()=>
         import('../rolePermission/rolepermission.module').then((m) =>m.rolePermissionModule),
         canActivate: [AuthGuard],

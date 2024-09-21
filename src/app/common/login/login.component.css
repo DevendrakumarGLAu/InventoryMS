@@ -26,3 +26,18 @@ input.login-btn.my_class1 {
 .invalid-feedback {
   display: block;
 }
+.input-group {
+  position: relative;
+}
+
+.toggle-button {
+  position: absolute;
+  right: 10px; /* Adjust as necessary */
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  padding: 0; /* Remove padding */
+  cursor: pointer;
+  z-index: 1; /* Ensure button is above the input */
+}

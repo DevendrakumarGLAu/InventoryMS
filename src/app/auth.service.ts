@@ -41,6 +41,12 @@ export class AuthService {
 
   // Logout method clears token and resets permissions
   logout(): void {
+    localStorage.removeItem('openSubmenuId');
+  localStorage.removeItem('activeMenuId');
+  localStorage.removeItem('AccountId')
+  localStorage.removeItem('id')
+  localStorage.removeItem('user')
+
     localStorage.removeItem('token'); // Remove token from localStorage
     this.loggedIn = false; // Update login status
     this.permissions = {}; // Clear permissions
