@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
 
     this.authService.loginAuth(val).subscribe(
       (res) => {
-        console.log(res);
+        // console.log(res);
         // return
 
         if (res.status === 'success') {

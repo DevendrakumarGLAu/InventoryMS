@@ -1,0 +1,51 @@
+
+<div class="row">
+    <div class="col-md-6"><h2 mat-dialog-title>Categories</h2></div>
+    <div class="col-md-6"> 
+        <span class="float-sm-right mt-3">
+            <button mat-button (click)="closeDialog()" class="btn btn-danger">
+              X
+            </button>
+          </span>
+    </div>
+</div>
+<div mat-dialog-content class="mat-elevation-z8">
+    <div >
+        <mat-form-field>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Search" #input>
+        </mat-form-field>
+        <table *ngIf="hasData; else noDataMessage" mat-table [dataSource]="categories" matSort>
+            <ng-container matColumnDef="sno">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Serial No. </th>
+                <td mat-cell *matCellDef="let element; let i = index"> {{ i + 1 + (paginator.pageIndex *
+                    paginator.pageSize)}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                <td mat-cell *matCellDef="let element"> {{ element.name }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Action">
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-icon class="material-icons customHover" (click)="opencategoryDialogue(element.id)"
+                        color="primary">edit</mat-icon>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns " sticky></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <ng-template #noDataMessage>
+            <p class="no-data-message">No data found.</p>
+        </ng-template>
+        <mat-paginator #paginator [pageSize]="4" [pageSizeOptions]="[4,8,12,15]" showFirstLastButtons></mat-paginator>
+
+    </div>
+</div>
+<div mat-dialog-actions class="float-sm-right">
+    <button mat-button (click)="closeDialog()" class="btn btn-danger ">
+        Close
+      </button>
+    <!-- <button mat-button (click)="close()">Close</button> -->
+</div>

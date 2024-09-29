@@ -8,6 +8,7 @@ import { SnackBarService } from 'src/app/services/snackbar.service';
 import { AddCategoryDialogueComponent } from '../addcategoryDialogue/add-category.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductDialogueComponent } from '../addProductDialogue/productdialogue.component';
+import { CatDialTableComponent } from '../addcategoryDialogue/categoryDialogueTable/cat-dial-table.component';
 @Component({
   selector: 'app-adddetails',
   templateUrl: './adddetails.component.html',
@@ -135,7 +136,21 @@ export class AdddetailsComponent implements OnInit {
   }
   opencategoryDialogue(): void {
     const dialogRef = this.dialog.open(AddCategoryDialogueComponent, {
-      width: '300px',
+      width: '600px',
+      height:'250px',
+      data:{
+        data:'',
+      flag:'add'
+      }
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      // console.log(result);
+    });
+  }
+  opencategoryTable():void{
+    const dialogRef = this.dialog.open(CatDialTableComponent, {
+      width: '600px',
+      height:'400px'
     });
     dialogRef.afterClosed().subscribe((result) => {
       // console.log(result);
@@ -144,15 +159,14 @@ export class AdddetailsComponent implements OnInit {
 
   openProductDialogue(): void {
     const dialogRef = this.dialog.open(ProductDialogueComponent, {
-      width: '500px',
-      height: '500px',
+      width: '550px',
+      height: '300px',
     });
     dialogRef.afterClosed().subscribe((result) => {
       // console.log(result);
     });
   }
   onSubmit(): void {
-    // console.log("form", this.addProductForm.value);
     if(this.addProductForm.invalid){
       return
     }

@@ -12,9 +12,9 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class AddCategoryDialogueComponent implements OnInit {
   categoryForm!: FormGroup;
-  // categories: any[] = [];
   categories!: MatTableDataSource<any>;
-  displayedColumns: string[] = ['sno', 'name','Action'];
+  flag:any;
+  id:any;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
@@ -26,20 +26,24 @@ export class AddCategoryDialogueComponent implements OnInit {
     this.categoryForm = this.fb.group({
       category: ['', Validators.required],
     });
+    this.data = data
+    this.flag = data.flag
+    this.id = data.id
+    // console.log("tid data",this.data)
   }
   ngOnInit(): void {
-    if (this.data && this.data.category) {
-      // If category data is provided, prefill the form fields for editing
-      this.categoryForm.patchValue({
-        category: this.data.category.name
-      });
-    }
     const val ={
-      Table_name:"category"
+      Table_name:"category",
+      filter_condition:`where id =${this.id}`,
+      column_string:'*',
+      limit:'1'
     }
     this.AddProductService.getData_common(val).subscribe(data=>{
-      console.log(data.data)
-      this.categories = new MatTableDataSource(data.data);
+      // console.log(data.data)
+      this.categoryForm.patchValue({
+        category:data.data[0].name
+      })
+      // this.categories = new MatTableDataSource(data.data);
     })
 
   }
@@ -55,8 +59,13 @@ export class AddCategoryDialogueComponent implements OnInit {
       const payload = {
         table_name: 'category',
         action: 'insert',
+        id:0,
         column_data: { name: this.categoryForm.value.category }
       };
+      if(this.id){
+        payload.action = "update";
+        payload.id = this.id;
+      }
       // console.log(paylod)
       this.AddProductService.addData_db_operations(payload).subscribe((response:any)=>{
         // console.log("data data",response)

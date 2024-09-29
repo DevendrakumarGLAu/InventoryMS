@@ -50,7 +50,7 @@ export class SidebarComponent implements OnInit {
     const currentRoute = this.router.url.split('?')[0]; // Get the base URL without query params
     let foundActiveMenuId = null;
     let foundOpenSubmenuId = null;
-
+    
     for (const menuItem of this.sidebaritems) {
       if (menuItem.childmenu) {
         for (const subMenuItem of menuItem.childmenu) {
@@ -86,11 +86,10 @@ export class SidebarComponent implements OnInit {
 
   isSubmenuOpen(menuItem: any): boolean {
     const currentRoute = this.router.url.split('?')[0];
-  
-    // Check if the current route matches specific routes where submenu should not open
     const excludedRoutes = [
       '/admin/dashboard',
       '/admin/addproduct',
+      '/admin/addproduct/add',
       '/admin/vendors',
       '/admin/printbill',
       '/admin/selling'
@@ -98,21 +97,11 @@ export class SidebarComponent implements OnInit {
     if (currentRoute == '/admin') {
       return this.openSubmenuId$.value === menuItem.id; // Allow submenu toggle
     }
-    // If current route is in excluded routes, return false
     if (excludedRoutes.includes(currentRoute)) {
       return false;
     }
   
-    // Check if the menu item is currently open
     return this.openSubmenuId$.value === menuItem.id;
   }
   
-  // isSubmenuOpen(menuItem: any): boolean {
-  //   const currentRoute = this.router.url.split('?')[0];
-  //   // Check if current route matches any child routes
-  //   if (menuItem.childmenu) {
-  //     return menuItem.childmenu.some((subMenuItem: any) => currentRoute.includes(subMenuItem.route));
-  //   }
-  //   return false;
-  // }
 }

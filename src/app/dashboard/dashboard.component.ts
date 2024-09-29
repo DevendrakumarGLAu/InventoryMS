@@ -196,7 +196,7 @@ export class DashboardComponent implements OnInit {
     };
     this.AddProductService.getData_common(productVal).subscribe((res) => {
       this.productDetails = res.data;
-      console.log(this.productDetails)
+      // console.log(this.productDetails)
       this.dataSource = new MatTableDataSource<any>(this.productDetails);
       // this.dataSource.data = this.productDetails;
     });
